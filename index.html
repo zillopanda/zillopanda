@@ -1,10 +1,26 @@
-<html>
-<title>Zillopanda Home Page</title>
+<html><head><title>Zillopanda Home Page</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link href="zillopandaLogo.png" rel="shortcut icon">
+<script>
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('txt').innerHTML =
+  h + ":" + m + ":" + s;
+  var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};
+  return i;
+}
+</script>
 <style>
 body {
   background-color: black;
@@ -18,7 +34,8 @@ body, html {height: 100%}
   background-size: cover;
 }
 </style>
-<body>
+</head>
+<body onload="startTime()">
 
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
   <div class="w3-display-topleft w3-padding-large w3-xlarge">
@@ -27,9 +44,10 @@ body, html {height: 100%}
   <div class="w3-display-middle">
     <h1 class="w3-jumbo w3-animate-top" align="center">COMING SOON</h1>
     <hr class="w3-border-grey" style="margin:auto;width:40%">
-    <p class="w3-large w3-center">Zillopanda Home Page</p>
+    <p class="w3-large w3-center" id="txt">Zillopanda Home Page</p>
   </div>
 </div>
 
-</body>
-</html>
+
+
+</body></html>
