@@ -1,0 +1,128 @@
+html {
+  background-color: black;
+  background-image: url(images/sf.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+body {
+  font-family: Futura, sans-serif;
+  background-color: #5675a6;
+  width: 60%;
+  padding: 20px;
+  margin-left: 40px;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+h1 {
+  font-family: Futura, sans-serif;
+  margin-top: 48px;
+  margin-bottom: 48px;
+  margin-left: 50px;
+  margin-right: auto;
+  text-align: center;
+  font-size: 50px;
+  border-bottom: 3px solid black;
+}
+img {
+  margin-left: 25%;
+  margin-right: auto;
+  border-radius: 20px;
+  width: 50%;
+  border-right: 5px solid black;
+  border-left: 5px solid black;
+}
+p, h3 {
+  text-align: center;
+}
+h5 {
+  text-align: center;
+}
+.list {
+  color: black;
+  background-color: #9fb6cc;
+  font-size: 15px;
+	list-style-type: circle;
+  border: none;
+	border-left: solid black 8px;
+  padding: 20px;
+}
+.list li {
+  padding: 10px;
+  margin-left: 20px;
+}
+.active {
+	background-color: black;
+	color: #9fb6cc;
+}
+.block {
+  margin: 20px;
+  padding: 20px;
+  background-color: #9fb6cc;
+  border: 2px solid black;
+  text-align: center;
+}
+.nav {
+  font-family: Futura, sans-serif;
+}
+.main {
+  font-family: Futura, sans-serif;
+  border: 2px solid black;
+  margin: 20px;
+  padding: 20px;
+}
+.chapter {
+  padding: 0px;
+	font-family: Futura, sans-serif;
+	position: fixed;
+	text-align: center;
+	border: none;
+	margin-left: 65%;
+  margin-right: auto;
+	width: 150px;
+  float: none;
+}
+.chapter h3 {
+  text-align: center;
+}
+.sideBlock {
+  text-align: center;
+	font-family: Futura, sans-serif;
+  padding: 20px;
+	position: fixed;
+	margin-left: 70%;
+  margin-right: auto;
+	width: 300px;
+  float: none;
+  background-color: #9fb6cc;
+  padding-top: 4%;
+  padding-bottom: 4%;
+  border: 2px solid black;
+}
+ul {
+  font-size: 15px;
+	list-style-type: none;
+	overflow: hidden;
+	background-color: #9fb6cc;
+	border: none;
+  border-radius: 20px;
+}
+
+.nav li {
+	float: left;
+}
+
+li a {
+	display: block;
+	color: black;
+	text-align: center;
+	padding: 10px 16px;
+	text-decoration: none;
+}
+
+li a:hover:not(.active) {
+	background-color: black;
+	color: #9fb6cc;
+}

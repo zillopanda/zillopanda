@@ -1,0 +1,91 @@
+<html>
+<head>
+  <link rel="stylesheet" href="css.css">
+  <title>San Francisco 2020</title>
+  <link href="zillopandaLogo.png" rel="shortcut icon">
+  <script language="JavaScript">
+      <!--hide
+      var password;
+      var pass1="zillopanda";
+      password=prompt('Enter Password To View Page','');
+      if (password==pass1)
+      alert('Welcome, Will');
+      else
+      {
+      window.location.replace("https://google.com.au");
+      }
+      //-->
+    </script>
+</head>
+<body>
+  <ul class="nav">
+    <li><a href="Main.html" class="active">Home</a></li>
+    <li><a href="EnvironmentalDangers/EnvironmentMain.html">Environmental Dangers</a></li>
+    <li><a href="SafeDriving/SafeMain.html">Safe Driving</a></li>
+    <li><a href="SafeCar.html">Car Safety</a></li>
+  </ul>
+  <div class="sideBlock">
+    <p id="demo"></p>
+  </div>
+  <h1>San Francisco 2020</h1>
+  <div class="block">
+      <a href="#latest">Go To Latest Post</a>
+    </div>
+  <h3>This is my blog that I will update whenever I can with photos and information about my travels in San Francisco.</h3>
+  <div class="main">
+    <h2>Brief Overview</h2>
+    <p>
+      In order to remain as safe as possible while driving one should try and
+      avoid as many distractions as possible, passengers should respect the
+      driver and the driver should have mobile devices turned off.
+    </p>
+    <p>
+      The driver should also respect the environment they find themselves in,
+      if the roads are wet or icy they should slow down to increase their time
+      to stop.
+    </p>
+  </div>
+  <p>
+		<video width="400" loop>
+  <source src="images/sv.mp4" type="video/mp4" id="video" onload="play()">
+</video>
+	</p>
+</body>
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Jan 20, 2020 12:00:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+// Get today's date and time
+var now = new Date().getTime();
+
+// Find the distance between now and the count down date
+var distance = countDownDate - now;
+
+// Time calculations for days, hours, minutes and seconds
+var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+// Display the result in the element with id="demo"
+document.getElementById("demo").innerHTML = "Departing in " + days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+
+// If the count down is finished, write some text
+if (distance < 0) {
+  clearInterval(x);
+  document.getElementById("demo").innerHTML = "In Flight";
+}
+}, 1000);
+</script>
+<script>
+  var myVideo = document.getElementById("video");
+  
+  function play() {  
+    myVideo.play(); 
+} 
+</script>
+</html>
