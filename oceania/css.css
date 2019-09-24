@@ -1,5 +1,5 @@
 html {
-  background-color: black;
+  background-color: #5675a6;
   background-image: url(images/bg.jpg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -140,4 +140,19 @@ td, th {
 
 tr:nth-child(even) {
   background-color: #9fb6cc;
+}
+
+#mainwrapper .box .simple-caption {
+    display: block;
+    bottom: -30px;
+    line-height: 25pt;
+    text-align: center;
+    color: #5675a6;
+}
+
+#mainwrapper .box:hover .simple-caption {
+    -moz-transform: translateY(-200%);
+    -o-transform: translateY(-200%);
+    -webkit-transform: translateY(-200%);
+    transform: translateY(-200%);
 }
