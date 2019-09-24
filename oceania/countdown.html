@@ -1,7 +1,7 @@
 <html>
 <head>
-  <link rel="stylesheet" href="css.css">
-  <title>Blog</title>
+  <link rel="stylesheet" href="style.css">
+  <title>Oceania</title>
   <link href="zillopandaLogo.png" rel="shortcut icon">
   <script language="JavaScript">
       /*
@@ -20,36 +20,15 @@
 <body>
   <ul class="nav">
     <li><a href="home.html" class="">Home</a></li>
-    <li><a href="blog.html" class="active">Blog</a></li>
-    <li><a href="countdown.html" class="">Fullscreen Countdown</a></li>
+    <li><a href="blog.html" class="">Blog</a></li>
+    <li><a href="countdown.html" class="active">Fullscreen Countdown</a></li>
   </ul>
-  <div class="sideBlock">
-    <p id="demo"></p>
+  <br>
+  <br>
+  <br>
+  <div id="block">
+    <h1 id="demo" style="background-color: #9fb6cc; border-radius: 20px;"></h1>
   </div>
-  <h1>Blog</h1>
-  <div class="block">
-    <a href="#latest">Go To Latest Post</a>
-  </div>
-  
-  <div class="main" id="latest">
-    <h3>Day 1 - Transit Day</h3>
-    <a>Today we drove to Wagga Wagga after checking that everything in the truck was secure.</a>
-    <br>
-    <br>
-    <div id="mainwrapper">
-      <div id="box-1" class="box">
-        <img id="image-1" src="images/IMG_2328.JPG">
-          <span class="caption simple-caption">
-            <p>Everything in the truck is secured down.</p>
-          </span>
-      </div>
-    </div>
-  </div>
-
-  <!--<div class="main" id="latest">
-    <h3>Day 2 - Oceania Sprint - Wagga Wagga</h3>
-    <a>Filler Text</a>
-  </div>-->
 </body>
 <script>
 // Set the date we're counting down to
@@ -71,21 +50,13 @@ var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 // Display the result in the element with id="demo"
-document.getElementById("demo").innerHTML = "Departing in " + days + "d " + hours + "h "
-+ minutes + "m " + seconds + "s ";
+document.getElementById("demo").innerHTML = "Departing in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
 // If the count down is finished, write some text
 if (distance < 0) {
   clearInterval(x);
-  document.getElementById("demo").innerHTML = "In Flight";
+  document.getElementById("demo").innerHTML = "Departed";
 }
 }, 1000);
-</script>
-<script>
-  var myVideo = document.getElementById("video");
-  
-  function play() {  
-    myVideo.play(); 
-} 
 </script>
 </html>
