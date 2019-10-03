@@ -1,0 +1,125 @@
+<html>
+<head>
+  <link rel="stylesheet" href="css.css">
+  <title>Blog</title>
+  <link href="zillopandaLogo.png" rel="shortcut icon">
+  <script language="JavaScript">
+      /*
+      var password;
+      var pass1="oceania19";
+      password=prompt('Enter Password To View Page','');
+      if (password==pass1)
+      	var i = 1;
+      else
+      {
+      window.location.replace("index.html");
+      }
+      */
+    </script>
+</head>
+<body>
+  <ul class="nav">
+    <li><a href="home.html" class="">Home</a></li>
+    <li><a href="blog.html" class="">Blog</a></li>
+    <li><a href="videos.html" class="active">Videos</a></li>
+    <li><a href="countdown.html" class="">Fullscreen Countdown</a></li>
+  </ul>
+  <div class="sideBlock">
+    <p id="demo"></p>
+  </div>
+  <h1>Blog</h1>
+  <div class="block">
+    <a href="#latest">Go To Latest Post</a>
+  </div>
+
+  <div class="main" id="2">
+    <h3>Day 2 - Oceania Sprint - Wagga Wagga</h3>
+    
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/UKxnpeAP5DA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+  </div>
+
+  <div class="main" id="2">
+    <h3>Days 3 & 4 - Australian Long and Relay - Wagga Wagga</h3>
+    
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/whC6AZaXU1w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+  </div>
+
+  <div class="main" id="5">
+  <h3>Day 5 - Schools Sprint/Public Day 1 - Wagga Wagga</h3>
+  
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/NAPVx9HH6f0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+  </div>
+
+  <div class="main" id="6">
+  <h3>Day 6 - Schools Long/Public Day 2 - Wagga Region</h3>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/a-BU86uAnfk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <div class="main" id="latest">
+  <h3>Day 7 - Schools Relay/Public Day 3 - Wagga Region</h3>
+  <h2 align="center">Coming Soon!</h2>
+    
+  </div>
+
+  <!--<div class="main" id="latest">
+    <h3>Day 8 - Transit Day</h3>
+    <a>Today we drove to Wangaratta after a very late breakfast at .</a>
+    <br>
+    <br>
+    <div id="mainwrapper">
+      <div id="box-1" class="box">
+        <img id="image-1" src="images/IMG_2328.JPG">
+          <span class="caption simple-caption">
+            <p>Everything in the truck is secured down.</p>
+          </span>
+      </div>
+    </div>
+    <a>Currently driving to Gundagai to get some lunch. Here is where we were at 11:00:</a>
+    <br>
+    <br>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3365.62493237034!2d148.90861131541405!3d-34.804795575672365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDQ4JzE3LjMiUyAxNDjCsDU0JzM4LjkiRQ!5e1!3m2!1sen!2sau!4v1569546527095!5m2!1sen!2sau" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+  </div>-->
+
+  </div>
+</body>
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Oct 7, 2019 17:00:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+// Get today's date and time
+var now = new Date().getTime();
+
+// Find the distance between now and the count down date
+var distance = countDownDate - now;
+
+// Time calculations for days, hours, minutes and seconds
+var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+// Display the result in the element with id="demo"
+document.getElementById("demo").innerHTML = "Returning in " + days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+
+// If the count down is finished, write some text
+if (distance < 0) {
+  clearInterval(x);
+  document.getElementById("demo").innerHTML = "Home";
+}
+}, 1000);
+</script>
+<script>
+  var myVideo = document.getElementById("video");
+  
+  function play() {  
+    myVideo.play(); 
+} 
+</script>
+</html>
