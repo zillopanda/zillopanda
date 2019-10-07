@@ -1,5 +1,5 @@
 html {
-  background-color: #5675a6;
+  background-color: 33658A;
   background-image: url(images/IMG_2364.JPG);
   background-size: cover;
   background-repeat: no-repeat;
@@ -8,7 +8,7 @@ html {
 }
 body {
   font-family: Futura, sans-serif;
-  background-color: #5675a6;
+  background-color: 33658A;
   width: 60%;
   padding: 20px;
   margin-left: 40px;
@@ -42,7 +42,7 @@ h5 {
 }
 .list {
   color: black;
-  background-color: #9fb6cc;
+  background-color: #86BBD8;
   font-size: 15px;
 	list-style-type: circle;
   border: none;
@@ -55,12 +55,12 @@ h5 {
 }
 .active {
 	background-color: black;
-	color: #9fb6cc;
+	color: #86BBD8;
 }
 .block {
   margin: 20px;
   padding: 20px;
-  background-color: #9fb6cc;
+  background-color: #86BBD8;
   border: 2px solid black;
   text-align: center;
 }
@@ -96,7 +96,7 @@ h5 {
   margin-right: auto;
 	width: 300px;
   float: none;
-  background-color: #9fb6cc;
+  background-color: #86BBD8;
   padding-top: 4%;
   padding-bottom: 4%;
   border: 2px solid black;
@@ -105,7 +105,7 @@ ul {
   font-size: 15px;
 	list-style-type: none;
 	overflow: hidden;
-	background-color: #9fb6cc;
+	background-color: #86BBD8;
 	border: none;
   border-radius: 20px;
 }
@@ -124,7 +124,7 @@ li a {
 
 li a:hover:not(.active) {
 	background-color: black;
-	color: #9fb6cc;
+	color: #86BBD8;
 }
 
 table {
@@ -139,7 +139,7 @@ td, th {
 }
 
 tr:nth-child(even) {
-  background-color: #9fb6cc;
+  background-color: #86BBD8;
 }
 
 #mainwrapper .box .simple-caption {
@@ -147,7 +147,7 @@ tr:nth-child(even) {
     bottom: -30px;
     line-height: 25pt;
     text-align: center;
-    color: #5675a6;
+    color: 33658A;
 }
 
 #mainwrapper .box:hover .simple-caption {
