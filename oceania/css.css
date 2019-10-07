@@ -57,6 +57,21 @@ h5 {
 	background-color: black;
 	color: #86BBD8;
 }
+
+.activeHome {
+  background-color: black;
+  color: #86BBD8;
+  margin-left: -80px;
+  padding-left: 100px;
+}
+
+.activeHome:hover {
+  background-color: black;
+  color: #86BBD8;
+  margin-left: -80px;
+  padding-left: 100px;
+}
+
 .block {
   margin: 20px;
   padding: 20px;
@@ -125,6 +140,10 @@ li a {
 li a:hover:not(.active) {
 	background-color: black;
 	color: #86BBD8;
+}
+
+a {
+  color: #C03221;
 }
 
 table {
