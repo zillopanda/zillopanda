@@ -175,3 +175,5 @@ tr:nth-child(even) {
     -webkit-transform: translateY(-200%);
     transform: translateY(-200%);
 }
+
+.disabled:hover {cursor: not-allowed;}
