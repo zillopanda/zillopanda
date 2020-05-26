@@ -1,0 +1,54 @@
+<html><head><title>Zillopanda Home Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="w3.css">
+<link href="logo1024.png" rel="shortcut icon">
+<script>
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('txt').innerHTML =
+  h + ":" + m + ":" + s;
+  var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};
+  return i;
+}
+</script>
+
+<style>
+body {
+  background-color: black;
+}
+body,h1 {font-family: "Futura", sans-serif}
+body, html {height: 100%}
+.bgimg {
+  background-image: url('PhotoAccess1.JPG');
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+</style>
+</head>
+<body onload="startTime()">
+
+  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div class="w3-display-topleft w3-padding-large w3-xlarge">
+      <img src="logo1024_cropped.png" alt="" height="200px">
+    </div>
+    <div class="w3-display-middle">
+      <h1 class="w3-jumbo w3-animate-top" align="center" id="txt">NO CONNECTION</h1>
+      <!--<hr class="w3-border-black" style="margin:auto;width:40%">
+      <p class="w3-large w3-center">COMING SOON</p>-->
+    </div>
+</div>
+
+</body>
+
+</html>

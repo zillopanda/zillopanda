@@ -1,54 +1,148 @@
-<html><head><title>Zillopanda Home Page</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="w3.css">
-<link href="logo1024.png" rel="shortcut icon">
-<script>
-function startTime() {
-  var today = new Date();
-  var h = today.getHours();
-  var m = today.getMinutes();
-  var s = today.getSeconds();
-  m = checkTime(m);
-  s = checkTime(s);
-  document.getElementById('txt').innerHTML =
-  h + ":" + m + ":" + s;
-  var t = setTimeout(startTime, 500);
+<html lang="en" class="gr__w3schools_com">
+<head>
+  <title>Photos</title>
+  <meta charset="UTF-8">
+  <style>
+    body,h1,h2,h3,h4,h5 {font-family: "Futura Book", "Raleway", sans-serif}
+    .w3-third img{margin-bottom: -6px; opacity: 0.8; cursor: pointer}
+    .w3-third img:hover{opacity: 1}
+    @font-face { /*Custom font*/
+	font-family: 'Futura Book';
+	src: url('futura book/Futura Book.ttf');
 }
-function checkTime(i) {
-  if (i < 10) {i = "0" + i};
-  return i;
-}
-</script>
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">-->
+  <link href="camera.png" rel="shortcut icon">
 
-<style>
-body {
-  background-color: black;
-}
-body,h1 {font-family: "Futura", sans-serif}
-body, html {height: 100%}
-.bgimg {
-  background-image: url('PhotoAccess1.JPG');
-  min-height: 100%;
-  background-position: center;
-  background-size: cover;
-}
-</style>
 </head>
-<body onload="startTime()">
+<body class="w3-light-grey w3-content" style="max-width: 1600px;" data-gr-c-s-loaded="true">
 
-  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-    <div class="w3-display-topleft w3-padding-large w3-xlarge">
-      <img src="logo1024_cropped.png" alt="" height="200px">
+  <!-- Sidebar/menu -->
+  <nav class="w3-sidebar w3-bar-block w3-white w3-animate-left w3-text-grey w3-collapse w3-top w3-center" style="z-index:3;width:300px;font-weight:bold" id="mySidebar"><br>
+    <h3 class="w3-padding-64 w3-center"><b>WILL<br>MADL</b></h3>
+    <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-hide-large">CLOSE</a>
+    <a href="#" onclick="w3_close()" class="w3-bar-item w3-button">PORTFOLIO</a> 
+    <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT ME</a> 
+    <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
+  </nav>
+
+  <!-- Top menu on small screens -->
+  <header class="w3-container w3-top w3-hide-large w3-white w3-xlarge w3-padding-16">
+    <span class="w3-left w3-padding">WILL MADL</span>
+    <a href="javascript:void(0)" class="w3-right w3-button w3-white" onclick="w3_open()">☰</a>
+  </header>
+
+  <!-- Overlay effect when opening sidebar on small screens -->
+  <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-main" style="margin-left:300px">
+
+    <!-- Push down content on small screens --> 
+    <div class="w3-hide-large" style="margin-top:83px"></div>
+
+    <!-- Photo grid -->
+    <div class="w3-row">
+      <div class="w3-third">
+        <img src="gridPhotos/1.JPG" style="width:100%" onclick="onClick(this)" alt="Drone live stream setup at the lake.">
+        <img src="gridPhotos/2.jpeg" style="width:100%" onclick="onClick(this)" alt="Arched Tree in Ainslie">
+        <img src="gridPhotos/3.JPG" style="width:100%" onclick="onClick(this)" alt="Nachos">
+      </div>
+
+      <div class="w3-third">
+        <img src="gridPhotos/4.JPG" style="width:100%" onclick="onClick(this)" alt="Shot on Mavic">
+        <img src="gridPhotos/5.jpg" style="width:100%" onclick="onClick(this)" alt="Axolotls">
+        <img src="gridPhotos/6.JPG" style="width:100%" onclick="onClick(this)" alt="Wallpaper">
+      </div>
+
+      <div class="w3-third">
+        <img src="gridPhotos/7.JPG" style="width:100%" onclick="onClick(this)" alt="Pancakes">
+        <img src="gridPhotos/8.jpg" style="width:100%" onclick="onClick(this)" alt="">
+        <img src="gridPhotos/9.JPG" style="width:100%" onclick="onClick(this)" alt="">
+      </div>
     </div>
-    <div class="w3-display-middle">
-      <h1 class="w3-jumbo w3-animate-top" align="center" id="txt">NO CONNECTION</h1>
-      <!--<hr class="w3-border-black" style="margin:auto;width:40%">
-      <p class="w3-large w3-center">COMING SOON</p>-->
+
+    <!-- Pagination 
+    <div class="w3-center w3-padding-32">
+      <div class="w3-bar">
+        <a class="w3-bar-item w3-button w3-hover-red"><</a>
+        <a href="#" class="w3-bar-item w3-black w3-button">1</a>
+        <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
+        <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
+        <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
+        <a href="#" class="w3-bar-item w3-button w3-hover-black">></a>
+      </div>
+    </div>-->
+
+    <!-- Modal for full size images on click-->
+    
+
+    <!-- About section -->
+    <div class="w3-container w3-dark-grey w3-center w3-text-light-grey w3-padding-32" id="about">
+      <h4><b>About Me</b></h4>
+      <img src="i-b4fD2zJ-X3.jpg" alt="Me" class="w3-image w3-padding-32" width="600" height="650">
+      <div class="w3-content w3-justify" style="max-width:600px">
+        <h4>Will Madl</h4>
+        <p style="font-family: "Futura Book", "Raleway", sans-serif">I am currently a student at Canberra Grammar School. I enjoy photography as well as making videos. I also work with my school to live stream carnivals and other events. I also took a predominant role in timing the Oceania Orienteering Championships in 2019. I have experience with many programming languages, such as Visual Basic and Swift. I am also competent with meOS, Photoshop and the Microsoft Office Suite.
+        </p>
+
+        <hr class="w3-opacity">
+        <h4 class="w3-padding-16">Technical Skills</h4>
+        <li class="w3-wide">Website Design</li>
+        <li class="w3-wide">Video Production</li>
+        <li class="w3-wide">Live Production</li>
+        <li class="w3-wide">Event Timing</li>
+        <li class="w3-wide">Photography</li>
+        <li class="w3-wide">Photoshop</li>
+
+        <hr class="w3-opacity">
+        <h4 class="w3-padding-16">Programming Languages</h4>
+        <li class="w3-wide">HTML, CSS, JS</li>
+        <li class="w3-wide">Node JS</li>
+        <li class="w3-wide">Python</li>
+        <li class="w3-wide">Swift, SpriteKit</li>
+        <li class="w3-wide">Visual Basic</li>
+
+        <p><a class="w3-button w3-light-grey w3-padding-large w3-margin-top w3-margin-bottom" href="">Download Resume</a></p>
+        <hr class="w3-opacity">
+      </div>
     </div>
-</div>
+
+    <!-- Contact section -->
+    <div class="w3-container w3-light-grey w3-padding-32 w3-padding-large" id="contact">
+      <div class="w3-content" style="max-width:600px">
+        <h5 class="w3-center"><b>Contact Me: <a href="mailto:william.madl.colman@gmail.com">william.madl.colman@gmail.com</a></b></h5>
+    </div>
+  </div>
+
+    <!-- End page content -->
+  </div>
+
+  <script>
+    // Script to open and close sidebar
+    function w3_open() {
+      document.getElementById("mySidebar").style.display = "block";
+      document.getElementById("myOverlay").style.display = "block";
+    }
+
+    function w3_close() {
+      document.getElementById("mySidebar").style.display = "none";
+      document.getElementById("myOverlay").style.display = "none";
+    }
+
+    // Modal Image Gallery
+    function onClick(element) {
+      document.getElementById("img01").src = element.src;
+      document.getElementById("modal01").style.display = "block";
+      var captionText = document.getElementById("caption");
+      captionText.innerHTML = element.alt;
+    }
+
+  </script>
+
+
 
 </body>
-
 </html>
