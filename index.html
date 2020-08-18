@@ -17,12 +17,11 @@
   <link href="logo1024.png" rel="shortcut icon">
 
 </head>
-<body class="w3-light-grey w3-content" style="max-width: 1600px;" data-gr-c-s-loaded="true">
+<body class="w3-light-grey w3-content" style="max-width: 1600px;" data-gr-c-s-loaded="true" onload="startTime()">
 
   <!-- Sidebar/menu -->
   <nav class="w3-sidebar w3-bar-block w3-white w3-animate-left w3-text-grey w3-collapse w3-top w3-center" style="z-index:3;width:300px;font-weight:bold" id="mySidebar"><br>
     <h2 class="w3-padding-64 w3-center" style='font-family: "Futura Book", "Raleway", sans-serif'><b>WILL<br>MADL</b></h2>
-    <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-hide-large" style='font-family: "Futura Book", "Raleway", sans-serif'>CLOSE</a>
     <a href="#" onclick="w3_close()" class="w3-bar-item w3-button" style='font-family: "Futura Book", "Raleway", sans-serif'>PORTFOLIO</a> 
     <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button" style='font-family: "Futura Book", "Raleway", sans-serif'>ABOUT ME</a> 
     <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button" style='font-family: "Futura Book", "Raleway", sans-serif'>CONTACT</a>
@@ -31,6 +30,8 @@
 	<h4 class=" w3-center" style='font-family: "Futura Book", "Raleway", sans-serif'><b>OTHER PAGES</b></h4>
     <a href="clock.html" onclick="w3_close()" class="w3-bar-item w3-button" style='font-family: "Futura Book", "Raleway", sans-serif'>CLOCK</a>
     <a href="oceania/index.html" onclick="w3_close()" class="w3-bar-item w3-button" style='font-family: "Futura Book", "Raleway", sans-serif'>OCEANIA</a>
+    <a href="https://pong.ml" onclick="w3_close()" class="w3-bar-item w3-button" style='font-family: "Futura Book", "Raleway", sans-serif' target="_blank">PONG</a>
+    <h2 class="w3-padding-64 w3-center" style='font-family: "Futura Book", "Raleway", sans-serif'id="txt"></h2>
   </nav>
 
   <!-- Top menu on small screens -->
@@ -72,7 +73,7 @@
     <!-- Pagination-->
     <div class="w3-center w3-padding-32">
       <div class="w3-bar">
-        <a  style='font-family: "Futura Book", "Raleway", sans-serif'class="w3-bar-item w3-button w3-hover-red"><</a>
+        <a style='font-family: "Futura Book", "Raleway", sans-serif'class="w3-bar-item w3-button w3-hover-blue"><</a>
         <a href="#"  style='font-family: "Futura Book", "Raleway", sans-serif'class="w3-bar-item w3-black w3-button">1</a>
         <a href="#"  style='font-family: "Futura Book", "Raleway", sans-serif'class="w3-bar-item w3-button w3-hover-black">2</a>
         <a href="#"  style='font-family: "Futura Book", "Raleway", sans-serif'class="w3-bar-item w3-button w3-hover-black">3</a>
@@ -82,7 +83,13 @@
     </div>
 
     <!-- Modal for full size images on click-->
-    
+    <div id="modal01" class="w3-modal w3-black" style="padding-top: 0px; display: none;" onclick="this.style.display='none'">
+    <span class="w3-button w3-black w3-xlarge w3-display-topright">×</span>
+    <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+      <img id="img01" class="w3-image" src="https://www.w3schools.com/w3images/girl.jpg">
+      <p style='font-family: "Futura Book", "Raleway", sans-serif' id="caption">Caption</p>
+    </div>
+  </div>
 
     <!-- About section -->
     <div class="w3-container w3-dark-grey w3-center w3-text-light-grey w3-padding-32" id="about">
@@ -101,6 +108,10 @@
         <li class="w3-wide" style='font-family: "Futura Book", "Raleway", sans-serif'>Event Timing</li>
         <li class="w3-wide" style='font-family: "Futura Book", "Raleway", sans-serif'>Photography</li>
         <li class="w3-wide" style='font-family: "Futura Book", "Raleway", sans-serif'>Photoshop</li>
+        <li class="w3-wide" style='font-family: "Futura Book", "Raleway", sans-serif'>Linux</li>
+        <li class="w3-wide" style='font-family: "Futura Book", "Raleway", sans-serif'>Xcode</li>
+        <li class="w3-wide" style='font-family: "Futura Book", "Raleway", sans-serif'>Office 365</li>
+        <li class="w3-wide" style='font-family: "Futura Book", "Raleway", sans-serif'>DaVinci Resolve</li>
 
         <hr class="w3-opacity">
         <h4 class="w3-padding-16" style='font-family: "Futura Book", "Raleway", sans-serif'>Programming Languages</h4>
@@ -144,6 +155,22 @@
       var captionText = document.getElementById("caption");
       captionText.innerHTML = element.alt;
     }
+
+    function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('txt').innerHTML =
+  h + ":" + m + ":" + s;
+  var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};
+  return i;
+}
 
   </script>
 
