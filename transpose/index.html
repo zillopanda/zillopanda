@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Transposer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Note Transposer</h1>
+    <form id="transposeForm">
+        <label for="originalNote">Original Note:</label>
+        <input type="text" id="originalNote" name="originalNote" value="F" placeholder="e.g., 'C', 'Ab', 'A'" required>
+        <br>
+        <label for="targetKey">Target Key:</label>
+        <input type="text" id="targetKey" name="targetKey" placeholder="e.g., 'D', 'Bb', 'G'" required>
+        <br>
+        <label for="secondNotes">Second Notes (comma separated):</label>
+        <input type="text" id="secondNotes" name="secondNotes" placeholder="e.g., 'F', 'Bb', 'C'" required>
+        <br>
+        <button type="button" onclick="transposeNotes()">Transpose</button>
+    </form>
+    <h2>Transposed Notes</h2>
+    <p id="result"></p>
+
+    <script src="transpose.js"></script>
+</body>
+</html>
