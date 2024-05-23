@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note Transposer</title>
+    <title>Transposition Calculator</title>
     <link rel="stylesheet" href="style.css">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="theme-color" content="#f4f4f4">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
-<body>
+<body class="dark-mode">
     <h1>Note Transposer</h1>
+    <div class="toggle-switch">
+        <input type="checkbox" id="darkModeToggle">
+        <label style="padding-left: 35px;" for="darkModeToggle"></label>
+    </div>
     <form id="transposeForm">
-        <label for="originalNote">Original Note:</label>
+        <label for="originalNote">Original Key:</label>
         <input type="text" id="originalNote" name="originalNote" value="F" placeholder="e.g., 'C', 'Ab', 'A'" required>
         <br>
         <label for="targetKey">Target Key:</label>
@@ -23,9 +27,19 @@
         <br>
         <button type="button" onclick="transposeNotes()">Transpose</button>
     </form>
-    <h2>Transposed Notes</h2>
-    <p id="result"></p>
+    <div id="hiddenBeforeResult" style="display: none;">
+        <br>
+        <h2>Transposed Notes</h2>
+        <p id="result"></p>
+    </div>
 
     <script src="transpose.js"></script>
+    <script>
+        // JavaScript to toggle dark mode
+        const toggleSwitch = document.getElementById('darkModeToggle');
+        toggleSwitch.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
 </body>
 </html>

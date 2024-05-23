@@ -51,6 +51,8 @@ function transposeNotes() {
 
     const transposedNotes = transposeToKey(originalNote, targetKey, secondNotes);
 
+    document.getElementById("hiddenBeforeResult").style.display = "block";
+
     if (typeof transposedNotes === 'string') {
         document.getElementById("result").innerText = transposedNotes;
         return;
