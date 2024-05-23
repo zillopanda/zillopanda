@@ -6,10 +6,10 @@
     <title>Transposition Calculator</title>
     <link rel="stylesheet" href="style.css">
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#f4f4f4">
+    <meta name="theme-color" content="#1e1e1e">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
-<body class="dark-mode">
+<body class="dark-mode" id="body">
     <h1>Note Transposer</h1>
     <div class="toggle-switch">
         <input type="checkbox" id="darkModeToggle">
@@ -35,10 +35,19 @@
 
     <script src="transpose.js"></script>
     <script>
+        var i = 0
         // JavaScript to toggle dark mode
         const toggleSwitch = document.getElementById('darkModeToggle');
         toggleSwitch.addEventListener('change', () => {
             document.body.classList.toggle('dark-mode');
+            if (i == 0) {
+                document.querySelector("meta[name='theme-color']").content = "#f4f4f4";
+                i = 1
+            } else {
+                document.querySelector("meta[name='theme-color']").content = "#1e1e1e";
+                i = 0
+            }
+            console.log(i)
         });
     </script>
 </body>
