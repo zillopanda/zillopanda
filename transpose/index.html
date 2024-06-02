@@ -17,10 +17,50 @@
     </div>
     <form id="transposeForm">
         <label for="originalNote">Original Key:</label>
-        <input type="text" id="originalNote" name="originalNote" value="F" placeholder="e.g., 'C', 'Ab', 'A'" required>
+        <table id="originalNoteButtons" class="note-buttons">
+            <tr>
+                <td><button type="button" class="note-button original" id="C" onclick="selectOriginalNote('C')">C</button></td>
+                <td><button type="button" class="note-button original" id="Db" onclick="selectOriginalNote('Db')">C#/Db</button></td>
+                <td><button type="button" class="note-button original" id="D" onclick="selectOriginalNote('D')">D</button></td>
+                <td><button type="button" class="note-button original" id="Eb" onclick="selectOriginalNote('Eb')">D#/Eb</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button original" id="E" onclick="selectOriginalNote('E')">E</button></td>
+                <td><button type="button" class="note-button original selected" id="F" onclick="selectOriginalNote('F')">F</button></td>
+                <td><button type="button" class="note-button original" id="Gb" onclick="selectOriginalNote('Gb')">F#/Gb</button></td>
+                <td><button type="button" class="note-button original" id="G" onclick="selectOriginalNote('G')">G</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button original" id="Ab" onclick="selectOriginalNote('Ab')">G#/Ab</button></td>
+                <td><button type="button" class="note-button original" id="A" onclick="selectOriginalNote('A')">A</button></td>
+                <td><button type="button" class="note-button original" id="Bb" onclick="selectOriginalNote('Bb')">A#/Bb</button></td>
+                <td><button type="button" class="note-button original" id="B" onclick="selectOriginalNote('B')">B</button></td>
+            </tr>
+        </table>
+        <input type="text" id="originalNote" name="originalNote" value="F" placeholder="e.g., 'C', 'Ab', 'A'" required style="display: none;">
         <br>
         <label for="targetKey">Target Key:</label>
-        <input type="text" id="targetKey" name="targetKey" placeholder="e.g., 'D', 'Bb', 'G'" required>
+        <table id="originalNoteButtons" class="note-buttons">
+            <tr>
+                <td><button type="button" class="note-button target" id="C" onclick="selectSecondNote('C')">C</button></td>
+                <td><button type="button" class="note-button target" id="Db" onclick="selectSecondNote('Db')">C#/Db</button></td>
+                <td><button type="button" class="note-button target" id="D" onclick="selectSecondNote('D')">D</button></td>
+                <td><button type="button" class="note-button target" id="Eb" onclick="selectSecondNote('Eb')">D#/Eb</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button target" id="E" onclick="selectSecondNote('E')">E</button></td>
+                <td><button type="button" class="note-button target" id="F" onclick="selectSecondNote('F')">F</button></td>
+                <td><button type="button" class="note-button target" id="Gb" onclick="selectSecondNote('Gb')">F#/Gb</button></td>
+                <td><button type="button" class="note-button target" id="G" onclick="selectSecondNote('G')">G</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button target" id="Ab" onclick="selectSecondNote('Ab')">G#/Ab</button></td>
+                <td><button type="button" class="note-button target" id="A" onclick="selectSecondNote('A')">A</button></td>
+                <td><button type="button" class="note-button target" id="Bb" onclick="selectSecondNote('Bb')">A#/Bb</button></td>
+                <td><button type="button" class="note-button target" id="B" onclick="selectSecondNote('B')">B</button></td>
+            </tr>
+        </table>
+        <input type="text" id="targetKey" name="targetKey" placeholder="e.g., 'D', 'Bb', 'G'" required style="display: none;">
         <br>
         <label for="secondNotes">Notes to transpose (comma separated):</label>
         <input type="text" id="secondNotes" name="secondNotes" placeholder="e.g., 'F', 'Bb', 'C'" required>
@@ -49,6 +89,33 @@
             }
             console.log(i)
         });
+
+        function selectOriginalNote(note) {
+            const buttons = document.querySelectorAll('.original');
+            buttons.forEach(button => button.classList.remove('selected'));
+            document.querySelector(`button[onclick="selectOriginalNote('${note}')"]`).classList.add('selected');
+            document.getElementById('originalNote').value = note;
+        }
+        
+        function selectSecondNote(note) {
+            const buttons = document.querySelectorAll('.target');
+            buttons.forEach(button => button.classList.remove('selected'));
+            document.querySelector(`button[onclick="selectSecondNote('${note}')"]`).classList.add('selected');
+            document.getElementById('targetKey').value = note;
+        }
+
+        document.getElementById('C').addEventListener('click',() => document.getElementById('originalNote').value = "C")
+        document.getElementById('Db').addEventListener('click',() => document.getElementById('originalNote').value = "Db")
+        document.getElementById('D').addEventListener('click',() => document.getElementById('originalNote').value = "D")
+        document.getElementById('Eb').addEventListener('click',() => document.getElementById('originalNote').value = "Eb")
+        document.getElementById('E').addEventListener('click',() => document.getElementById('originalNote').value = "E")
+        document.getElementById('F').addEventListener('click',() => document.getElementById('originalNote').value = "F")
+        document.getElementById('Gb').addEventListener('click',() => document.getElementById('originalNote').value = "Gb")
+        document.getElementById('G').addEventListener('click',() => document.getElementById('originalNote').value = "G")
+        document.getElementById('Ab').addEventListener('click',() => document.getElementById('originalNote').value = "Ab")
+        document.getElementById('A').addEventListener('click',() => document.getElementById('originalNote').value = "A")
+        document.getElementById('Bb').addEventListener('click',() => document.getElementById('originalNote').value = "Bb")
+        document.getElementById('B').addEventListener('click',() => document.getElementById('originalNote').value = "B")
     </script>
 </body>
 </html>

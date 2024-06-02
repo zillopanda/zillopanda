@@ -60,7 +60,7 @@ function transposeNotes() {
 
     const result = `
         Transposing notes from ${originalNote} to ${targetKey}:<br>
-        ${secondNotes.map((note, index) => `${note} -> ${transposedNotes[index]}`).join('<br>')}
+        ${secondNotes.map((note, index) => `${note} → ${transposedNotes[index]}`).join('<br>')}
     `;
 
     document.getElementById("result").innerHTML = result;
