@@ -40,12 +40,12 @@
         <input type="text" id="originalNote" name="originalNote" value="F" placeholder="e.g., 'C', 'Ab', 'A'" required style="display: none;">
         <br>
         <label for="targetKey">Target Key:</label>
-        <table id="originalNoteButtons" class="note-buttons">
+        <table id="secondNoteButtons" class="note-buttons">
             <tr>
                 <td><button type="button" class="note-button target" id="C" onclick="selectSecondNote('C')">C</button></td>
                 <td><button type="button" class="note-button target" id="Db" onclick="selectSecondNote('Db')">C#/Db</button></td>
                 <td><button type="button" class="note-button target" id="D" onclick="selectSecondNote('D')">D</button></td>
-                <td><button type="button" class="note-button target" id="Eb" onclick="selectSecondNote('Eb')">D#/Eb</button></td>
+                <td><button type="button" class="note-button target selected" id="Eb" onclick="selectSecondNote('Eb')">D#/Eb</button></td>
             </tr>
             <tr>
                 <td><button type="button" class="note-button target" id="E" onclick="selectSecondNote('E')">E</button></td>
@@ -60,10 +60,30 @@
                 <td><button type="button" class="note-button target" id="B" onclick="selectSecondNote('B')">B</button></td>
             </tr>
         </table>
-        <input type="text" id="targetKey" name="targetKey" placeholder="e.g., 'D', 'Bb', 'G'" required style="display: none;">
+        <input type="text" id="targetKey" name="targetKey" value="Eb" placeholder="e.g., 'D', 'Bb', 'G'" required style="display: none;">
         <br>
-        <label for="secondNotes">Notes to transpose (comma separated):</label>
-        <input type="text" id="secondNotes" name="secondNotes" placeholder="e.g., 'F', 'Bb', 'C'" required>
+        <label for="secondNotes">Notes to transpose</label>
+        <table id="secondNoteButtons" class="note-buttons">
+            <tr>
+                <td><button type="button" class="note-button transpose" id="C" onclick="selectTransposeNote('C')">C</button></td>
+                <td><button type="button" class="note-button transpose" id="Db" onclick="selectTransposeNote('Db')">C#/Db</button></td>
+                <td><button type="button" class="note-button transpose" id="D" onclick="selectTransposeNote('D')">D</button></td>
+                <td><button type="button" class="note-button transpose" id="Eb" onclick="selectTransposeNote('Eb')">D#/Eb</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button transpose" id="E" onclick="selectTransposeNote('E')">E</button></td>
+                <td><button type="button" class="note-button transpose" id="F" onclick="selectTransposeNote('F')">F</button></td>
+                <td><button type="button" class="note-button transpose" id="Gb" onclick="selectTransposeNote('Gb')">F#/Gb</button></td>
+                <td><button type="button" class="note-button transpose" id="G" onclick="selectTransposeNote('G')">G</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button transpose" id="Ab" onclick="selectTransposeNote('Ab')">G#/Ab</button></td>
+                <td><button type="button" class="note-button transpose" id="A" onclick="selectTransposeNote('A')">A</button></td>
+                <td><button type="button" class="note-button transpose" id="Bb" onclick="selectTransposeNote('Bb')">A#/Bb</button></td>
+                <td><button type="button" class="note-button transpose" id="B" onclick="selectTransposeNote('B')">B</button></td>
+            </tr>
+        </table>
+        <input type="text" id="secondNotes" name="secondNotes" placeholder="e.g., 'F', 'Bb', 'C'" required style="display: none;">
         <br>
         <button type="button" onclick="transposeNotes()">Transpose</button>
     </form>
@@ -95,6 +115,7 @@
             buttons.forEach(button => button.classList.remove('selected'));
             document.querySelector(`button[onclick="selectOriginalNote('${note}')"]`).classList.add('selected');
             document.getElementById('originalNote').value = note;
+            transposeNotes();
         }
         
         function selectSecondNote(note) {
@@ -102,20 +123,25 @@
             buttons.forEach(button => button.classList.remove('selected'));
             document.querySelector(`button[onclick="selectSecondNote('${note}')"]`).classList.add('selected');
             document.getElementById('targetKey').value = note;
+            transposeNotes();
         }
 
-        document.getElementById('C').addEventListener('click',() => document.getElementById('originalNote').value = "C")
-        document.getElementById('Db').addEventListener('click',() => document.getElementById('originalNote').value = "Db")
-        document.getElementById('D').addEventListener('click',() => document.getElementById('originalNote').value = "D")
-        document.getElementById('Eb').addEventListener('click',() => document.getElementById('originalNote').value = "Eb")
-        document.getElementById('E').addEventListener('click',() => document.getElementById('originalNote').value = "E")
-        document.getElementById('F').addEventListener('click',() => document.getElementById('originalNote').value = "F")
-        document.getElementById('Gb').addEventListener('click',() => document.getElementById('originalNote').value = "Gb")
-        document.getElementById('G').addEventListener('click',() => document.getElementById('originalNote').value = "G")
-        document.getElementById('Ab').addEventListener('click',() => document.getElementById('originalNote').value = "Ab")
-        document.getElementById('A').addEventListener('click',() => document.getElementById('originalNote').value = "A")
-        document.getElementById('Bb').addEventListener('click',() => document.getElementById('originalNote').value = "Bb")
-        document.getElementById('B').addEventListener('click',() => document.getElementById('originalNote').value = "B")
+        function selectTransposeNote(note) {
+            const secondNotesInput = document.getElementById('secondNotes');
+            const noteArray = secondNotesInput.value ? secondNotesInput.value.split(',') : [];
+            const noteIndex = noteArray.indexOf(note);
+
+            if (noteIndex === -1) {
+                noteArray.push(note);
+                document.querySelector(`button[onclick="selectTransposeNote('${note}')"]`).classList.add('selected');
+            } else {
+                noteArray.splice(noteIndex, 1);
+                document.querySelector(`button[onclick="selectTransposeNote('${note}')"]`).classList.remove('selected');
+            }
+
+            secondNotesInput.value = noteArray.join(',');
+            transposeNotes();
+        }
     </script>
 </body>
 </html>
