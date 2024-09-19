@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Four Player Pong</title>
+		<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+		<link href="pongIcon.png" rel="shortcut icon">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {margin:0;height:2000px;}
+
+.icon-bar {
+  position: fixed;
+  top: 25px;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.icon-bar a {
+  display: block;
+  text-align: center;
+  padding: 16px;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 20px;
+}
+
+.icon-bar a:hover {
+  background-color: #000;
+}
+
+.facebook {
+  background: #3B5998;
+  color: white;
+}
+
+.twitter {
+  background: #55ACEE;
+  color: white;
+}
+
+.google {
+  background: #dd4b39;
+  color: white;
+}
+
+.linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.youtube {
+  background: #bb0000;
+  color: white;
+}
+
+.content {
+  margin-left: 75px;
+  font-size: 30px;
+}
+</style>
+
+		<style>
+			html, body {
+				height: 100%;
+				margin: 0;
+			}
+			body {
+				background: darkgrey;
+				font-family: 'Press Start 2P', sans-serif;
+				text-align: center;
+			}
+			canvas {
+				background: black;
+				border: 1px dashed white;
+				margin: auto;
+				display: block;
+			}
+			h1 {
+				text-decoration: underline;
+			}
+			button {
+				background: darkgrey;
+				font-family: 'Press Start 2P', sans-serif;
+				text-align: center;
+				border: darkgrey;
+				text-decoration: underline;
+				font-size: 16px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>FOUR PLAYER PONG</h1>
+
+		<div class="icon-bar">
+			<!-- <a href="https://twitter.com/zillopanda" class="twitter"><i class="fa fa-twitter"></i></a> -->
+			<a href="https://madl.au" class="facebook" target="_blank"><img src="logo1024_cropped.png" height="30px"></a>
+		</div>
+
+		<br>
+		<br>
+		<canvas width="800" height="600" id="game"></canvas>
+		<p>
+			Blue score:<span id="dispBlue"></span>
+			Green score:<span id="dispGreen"></span>
+			Red score:<span id="dispRed"></span>
+			Yellow score:<span id="dispYellow"></span>
+		</p>
+
+		<button onclick="location.replace(location.href)">Restart</button>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+
+		<h2>How to play:</h2>
+		<p>Blue - Up: q Down: a</p>
+		<p>Green - Left: [ Right: ]</p>
+		<p>Red - Up: ' Down: /</p>
+		<p>Yellow - Left: z Right: x</p>
+		<p>You have 10 lives. When you run out of lives you can no longer move your paddle. The last player remaining wins.</p>
+		<p>Green and Yellow are faster to account for the longer distance.</p>
+		<h3>Press any key to start!</h3>
+
+		<br>
+
+		<button onclick="scoreBlue = 0" style="color: darkgrey;">Clear Blue Score</button>
+		<button onclick="scoreGreen = 0" style="color: darkgrey;">Clear Green Score</button>
+		<button onclick="scoreRed = 0" style="color: darkgrey;">Clear Red Score</button>
+		<button onclick="scoreYellow = 0" style="color: darkgrey;">Clear Yellow Score</button>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<p>Four Player Pong - &#169; Will Madl - 2018</p>
+		<br>
+		<script>
+
+			// A canvas is used to draw graphics (using a 2d context)
+			var canvas = document.getElementById('game');
+			var context = canvas.getContext('2d');
+
+			// The size of the player (width and height)
+			var gridSize = 16;
+
+			var start = false;
+
+			var scoreRed = 0;
+			var scoreGreen = 0;
+			var scoreYellow = 0;
+			var scoreBlue = 0;
+
+			// Use an object prototype instead of manually creating an object
+			// Use the parameter of colour so that we can identify different players
+			function playerPrototype(playerColour) {
+				this.x = 400-gridSize/2;
+				this.y = 300-gridSize/2;
+				this.speedX = 0;
+				this.speedY = 0;
+
+				// Combine move and draw into one function called update
+				this.update = function() {
+
+					// Move the player
+					this.x = this.x + this.speedX;
+					this.y = this.y + this.speedY;
+
+					// Then draw the player
+					context.fillStyle = playerColour;
+					context.fillRect(this.x, this.y, gridSize-1, gridSize-(-100));
+
+				};
+			}
+
+			function playerPrototype2(playerColour2) {
+				this.x = 400-gridSize/2;
+				this.y = 300-gridSize/2;
+				this.speedX = 0;
+				this.speedY = 0;
+
+				// Combine move and draw into one function called update
+				this.update = function() {
+
+					// Move the player
+					this.x = this.x + this.speedX;
+					this.y = this.y + this.speedY;
+
+					// Then draw the player
+					context.fillStyle = playerColour2;
+					context.fillRect(this.x, this.y, gridSize-(-100), gridSize-1);
+
+				};
+			}
+
+			function ball(ballColour) {
+				this.x = 400-gridSize/2;
+				this.y = 300-gridSize/2;
+				this.speedX = 0;
+				this.speedY = 0;
+
+				// Combine move and draw into one function called update
+				this.update = function() {
+
+					// Move the ball
+					this.x = this.x + this.speedX;
+					this.y = this.y + this.speedY;
+
+					// Then draw the ball
+					context.fillStyle = ballColour;
+					context.fillRect(this.x, this.y, gridSize-1, gridSize-1);
+
+				};
+			}
+
+			// Set the colour of player to lime, and use the prototype
+			var player = new playerPrototype('blue');
+
+			// Add a second player using the same prototype, with a different colour
+			var player2 = new playerPrototype('red');
+
+			// Add a second player using the same prototype, with a different colour
+			var player3 = new playerPrototype2('green');
+
+			// Add a second player using the same prototype, with a different colour
+			var player4 = new playerPrototype2('yellow');
+
+			var ball = new ball('white');
+
+			// Game loop
+			function loop() {
+
+				document.getElementById("dispRed").innerHTML = scoreRed;
+				document.getElementById("dispGreen").innerHTML = scoreGreen;
+				document.getElementById("dispYellow").innerHTML = scoreYellow;
+				document.getElementById("dispBlue").innerHTML = scoreBlue;
+
+				if (player.x != 20){
+					player.x = 20;
+				}
+
+				if (player2.x != 761){
+					player2.x = 761;
+				}
+
+				if (player3.y != 20){
+					player3.y = 20;
+				}
+
+				if (player4.y != 561){
+					player4.y = 561;
+				}
+
+				if (player.x >= 761){
+                    player.speedX = -6;
+				} if (player.x <= 20){
+                    player.speedX = 6;
+				} if (player.y >= 561){
+               	 	player.speedY = -6;
+				} if (player.y <= 20){
+                	player.speedY = 6;
+        		}
+
+				if (player2.x >= 761){
+                    player2.speedX = -6;
+				} if (player2.x <= 20){
+                    player2.speedX = 6;
+				} if (player2.y >= 561){
+                	player2.speedY = -6;
+				} if (player2.y <= 20){
+                	player2.speedY = 6;
+        		}
+
+				if (player3.x >= 761){
+                    player3.speedX = -7;
+				} if (player3.x <= 20){
+                    player3.speedX = 7;
+				} if (player3.y >= 561){
+                	player3.speedY = -7;
+				} if (player3.y <= 20){
+                	player3.speedY = 7;
+        		}
+
+				if (player4.x >= 761){
+                    player4.speedX = -7;
+				} if (player4.x <= 20){
+                    player4.speedX = 7;
+				} if (player4.y >= 561){
+                	player4.speedY = -7;
+				} if (player4.y <= 20){
+                	player4.speedY = 7;
+        		}
+
+				if (ball.x >= 761){
+                    ball.speedX = -5;
+					scoreRed ++;
+				} if (ball.x <= 20){
+                    ball.speedX = 5;
+					scoreBlue++;
+				} if (ball.y >= 561){
+                	ball.speedY = -5;
+					scoreYellow ++;
+				} if (ball.y <= 20){
+                	ball.speedY = 5;
+					scoreGreen ++;
+        		}
+
+				if (ball.x < 20) {
+					if (ball.y > player.y && ball.y < player.y+100){
+						scoreBlue --;
+					}
+				}
+
+				if (ball.x > 761) {
+					if (ball.y > player2.y && ball.y < player2.y+100){
+						scoreRed --;
+					}
+				}
+
+				if (ball.y < 20) {
+					if (ball.x > player3.x && ball.x < player3.x+100){
+						scoreGreen --;
+					}
+				}
+
+				if (ball.y > 561) {
+					if (ball.x > player4.x && ball.x < player4.x+100){
+						scoreYellow --;
+					}
+				}
+
+				// Clear the context so objects can be redrawn
+				context.clearRect(0,0,canvas.width,canvas.height);
+
+				// Move and draw each player using their in-built update() functions
+				player.update();
+				player2.update();
+				player3.update();
+				player4.update();
+				ball.update();
+
+				// Call the next frame
+				requestAnimationFrame(loop);
+			}
+
+			// Event listeners enable the players to interact, with events such as mouse clicks or keys being pressed
+			document.addEventListener('keydown', function(e) {
+
+				// // Player 1 - WASD Keys
+				// if (e.key == "a") {
+				// 	player.speedY = 6;
+				// 	player.speedX = 0;
+				// } else if (e.key == "q") {
+				// 	player.speedY = -6;
+				// 	player.speedX = 0;
+				// } else if (e.key == "Alt") {
+				// 	player.speedX = 0;
+				// 	player.speedY = 0;
+				// }
+
+				// Player 1 - WASD Keys
+				while (e.key == "a") {
+					player.speedY = 6;
+					player.speedX = 0;
+				} 
+				while (e.key == "q") {
+					player.speedY = -6;
+					player.speedX = 0;
+				} 
+
+				//Player - IJKL Keys
+				if (e.key == "/") {
+					player2.speedY = 6;
+					player2.speedX = 0;
+				} else if (e.key == "'") {
+					player2.speedY = -6;
+					player2.speedX = 0;
+				} else if (e.key == "Alt") {
+					player2.speedX = 0;
+					player2.speedY = 0;
+				}
+
+				// Player 3 - Arrow Keys | Players 3 and 4 are slightly faster to make up for the rectangular playing field to make the game fair. I noticed too late on to change.
+				if (e.key == "[") {
+					player3.speedX = -7;
+					player3.speedY = 0;
+				} else if (e.key == "]") {
+					player3.speedX = 7;
+					player3.speedY = 0;
+				}  else if (e.key == "Alt") {
+					player3.speedX = 0;
+					player3.speedY = 0;
+				}
+
+				// Player 4 - TFGH Keys
+				if (e.key == "z") {
+					player4.speedX = -7;
+					player4.speedY = 0;
+				} else if (e.key == "x") {
+					player4.speedX = 7;
+					player4.speedY = 0;
+				}  else if (e.key == "Alt") {
+					player4.speedX = 0;
+					player4.speedY = 0;
+				}
+
+				if (e.key !== "q" && e.key !== "a" && e.key !== "[" && e.key !== "]" && e.key !== "ArrowUp" && e.key !== "ArrowDown" && e.key !== "z" && e.key !== "x" && e.key !== "w" && e.key !== "s" && e.key !== "1" && e.key !== "2" && e.key !== "Alt" && e.key !== "Shift" && e.key !== "ArrowLeft" && e.key !== "Delete" && e.key !== "=" && e.key !== "-" && e.key !== "p" && e.key !== "'" && e.key !== ";" && e.key !== "c" && e.key !== "Tab" && e.key !== "." && e.key !== "/" && e.key !== "Enter" && e.key !== "r" && e.key !== "Meta" && e.key !== "Control") {
+				ball.speedX = 4;
+				ball.speedY = 3;
+				start = true;
+				}
+
+				if (scoreRed >= 10) {
+					player2.speedY = 0;
+				}
+
+				if (scoreBlue >= 10) {
+					player.speedY = 0;
+				}
+
+				if (scoreYellow >= 10) {
+					player4.speedX = 0;
+				}
+
+				if (scoreGreen >= 10) {
+					player3.speedX = 0;
+				}
+
+			});
+
+			// Start the game by calling the first frame
+			requestAnimationFrame(loop);
+		</script>
+	</body>
+</html>
