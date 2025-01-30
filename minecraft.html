@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function initServerData(serverIp,serverPort){
+                const serverIpElement = document.getElementById('server-ip');
+                serverIpElement.innerHTML = serverIp;
+                fetch('https://mcapi.us/server/status?ip='+serverIp+'&port='+serverPort)
+                .then(response => response.json())
+                .then(data => handleServerStatus(data));
+        
+                function handleServerStatus(data){
+                    console.log(data);
+                    if(data.status=='error'){
+                        console.log(data.error);
+                        return false;
+                    }
+                    const motd = document.getElementById("motd");
+                    motd.innerHTML = data.motd_json;
+
+                    const playerCounter = document.getElementById("player-count");
+                    count = data.players.now
+                    if (count === 1) {
+                        playerCounter.innerHTML = "1 Player Online";
+                    } else {
+                        playerCounter.innerHTML = data.players.now + " Players Online";
+                    }
+
+                    const logo = document.getElementById("server-icon");
+                    if (data.favicon != null) {
+                        logo.src = data.favicon;
+                    }
+
+                    const playerList = document.getElementById('player-list');
+                    data.players.sample.forEach(player => {
+                        const listItem = document.createElement('tr');
+                        listItem.textContent = player.name;
+                        playerList.appendChild(listItem);
+                    });
+                    
+                } 
+            }
+        </script>
+    </head>
+    <body onload="initServerData('144.6.176.206', '25565')">
+        <div>
+            <img src="https://cdn.pixabay.com/photo/2013/07/12/19/25/minecraft-154749_1280.png"  id="server-icon" height="50px" />
+            <div>
+                <h1 id="player-count">Loading...</h1>
+                <span id="server-ip">Connection Error</span> - <span id="motd"></span>
+                <table id="player-list" class="player-list">
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
