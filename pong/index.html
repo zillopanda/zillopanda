@@ -364,14 +364,16 @@ body {margin:0;height:2000px;}
 				// }
 
 				// Player 1 - WASD Keys
-				while (e.key == "a") {
+				if (e.key == "a") {
 					player.speedY = 6;
 					player.speedX = 0;
-				} 
-				while (e.key == "q") {
+				} else if (e.key == "q") {
 					player.speedY = -6;
 					player.speedX = 0;
-				} 
+				} else if (e.key == "Alt") {
+					player2.speedX = 0;
+					player2.speedY = 0;
+				}
 
 				//Player - IJKL Keys
 				if (e.key == "/") {
