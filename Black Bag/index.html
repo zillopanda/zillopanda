@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Cadets CTF</title>
+<style>
+/* ===== Global Theme (from Website 1) ===== */
+body {
+    font-family: Arial, sans-serif;
+    background: #0e0e0e;
+    color: #f1f1f1;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #222;
+    padding: 1em;
+    text-align: center;
+    font-size: 1.5em;
+    border-bottom: 2px solid #00ff88;
+}
+
+#scoreboard {
+    font-weight: bold;
+    color: #00ff88;
+}
+
+/* ===== Filter Bar ===== */
+#filterBar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    padding: 1.5em;
+    background: #111;
+    border-bottom: 1px solid #333;
+}
+
+.filterBtn {
+    color: #f1f1f1;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 0.6em 1.2em;
+    cursor: pointer;
+    font-weight: bold;
+    background: #1a1a1a;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 0 4px #000;
+}
+
+.filterBtn:hover,
+.filterBtn.active {
+    border-color: #00ff88;
+    box-shadow: 0 0 12px #00ff8855;
+    transform: translateY(-3px);
+}
+
+/* ===== Challenge Grid ===== */
+#challenges {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1em;
+    padding: 3em 4em;
+    justify-items: center;
+}
+
+/* ===== Challenge Tile ===== */
+.challenge {
+    background: #1a1a1a;
+    padding: 2em;
+    margin: 0.5em;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    max-width: 280px;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 0 5px #000;
+    box-sizing: border-box;
+}
+
+.challenge:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 12px #00ff8855;
+}
+
+/* Solved Challenges */
+.solved {
+    border: 2px solid #00ff88;
+    background: #1f3f30;
+}
+
+/* Category colors */
+.room { background: #1a1f3f; }
+.mainframe { background: #1a3f2a; }
+.forensics { background: #3f1a1a; }
+.pwn { background: #3f2a1a; }
+.crypto { background: #3f1a37; }
+.misc { background: #2a2a2a; }
+
+/* Category-based colors (match challenge tiles) */
+.filterBtn.all { background: #1a1a1a; }
+.filterBtn.room { background: #1a1f3f; }
+.filterBtn.mainframe { background: #1a3f2a; }
+.filterBtn.forensics { background: #3f1a1a; }
+.filterBtn.pwn { background: #3f2a1a; }
+.filterBtn.crypto { background: #3f1a37; }
+.filterBtn.misc { background: #2a2a2a; }
+
+/* ===== Modal ===== */
+#challengeModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#modalContent {
+    background: #222;
+    padding: 2em;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 0 15px #00ff8844;
+}
+
+#modalDescription code {
+    background: #111;
+    color: #00ff88;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+#modalDescription pre {
+    background: #111;
+    padding: 0.6em;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 0.6em;
+    margin: 0.5em 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+button {
+    padding: 0.6em 1.2em;
+    border: none;
+    background: #00ff88;
+    color: #000;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #00e07a;
+}
+
+#closeBtn {
+    background: #ff4444;
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#feedback {
+    margin-top: 0.5em;
+}
+</style>
+</head>
+<body>
+
+<header>
+    Code Cadets CTF — Total Score: <span id="scoreboard">0</span> pts
+</header>
+
+<!-- Filter Buttons -->
+<div id="filterBar"></div>
+
+<main>
+    <div id="challenges"></div>
+</main>
+
+<!-- Modal -->
+<div id="challengeModal">
+    <div id="modalContent">
+        <button id="closeBtn">X</button>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <p><strong>Category:</strong> <span id="modalCategory"></span></p>
+        <p><strong>Points:</strong> <span id="modalPoints"></span></p>
+        <form id="flagForm">
+            <input type="text" id="flagInput" placeholder="Enter your flag...">
+            <button type="submit">Submit Flag</button>
+        </form>
+        <p id="feedback"></p>
+    </div>
+</div>
+
+<script>
+function parseMarkdown(md) {
+    if (!md) return "";
+    return md
+        .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+        .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+        .replace(/^# (.*$)/gim, "<h1>$1</h1>")
+        .replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/gim, "<em>$1</em>")
+        .replace(/`([^`]+)`/gim, "<code>$1</code>")
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank">$1</a>')
+        .replace(/\n/gim, "<br>");
+}
+
+// Utility: hash a string using SHA-256
+async function sha256(str) {
+    const buf = new TextEncoder().encode(str);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", buf);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+// Challenges
+const challenges = [
+    {
+        id: 1,
+        title: "Clean Break",
+        description: "Enter the room without causing unnecessary damage",
+        category: "room",
+        hash: "3116ef548696847f9f82b8cc00a76c6bcfcb9d5190e8a2a8a0451d775ea7dbd6",
+        points: 100
+    },
+    {
+        id: 2,
+        title: "Good Manners",
+        description: "Were you born in a barn?",
+        category: "room",
+        hash: "516f941c27a595b8f7bd228c058a7fded7198f909848f6e067088b4af8c47589",
+        points: 100
+    },
+    {
+        id: 3,
+        title: "PISTACHIO-",
+        description: "Anaphylaxis free zone",
+        category: "room",
+        hash: "aea86275f976d88e2d5eac1df37298187fe9edd67e4fd57d49c8f16b9b7d30ea",
+        points: 100
+    },
+    {
+        id: 4,
+        title: "Whats in the box?",
+        description: "Get the flag from inside the box, that's it.",
+        category: "room",
+        hash: "6b947f78a046273f699f4325a3328317c873e8b7212a4f952f924ffed1360d0d",
+        points: 200
+    },
+    {
+        id: 5,
+        title: "Vietnam Holiday",
+        description: "Seems like a nice place...",
+        category: "misc",
+        hash: "61db7e6555f5f115cc16bd8d51be811fc154aed81bdda1a5b2ebbd6f00607b8d",
+        points: 100
+    },
+    {
+        id: 6,
+        title: "That's rubbish",
+        description: "One man's trash is another man's flag",
+        category: "room",
+        hash: "d9db0c9c031d67fd61ff44dc31abf91bc3176cef7b7f59e530e0f7fe8eb62455",
+        points: 200
+    },
+    {
+        id: 7,
+        title: "Hidden in Plain Light",
+        description: "Don't stare at it for too long",
+        category: "room",
+        hash: "d6b2c128512bb7ddef086687f321ebb81c8aafc391935b83aaa347392f819710",
+        points: 200
+    },
+    {
+        id: 8,
+        title: "Flag in a Haystack",
+        description: "`jake@aethernal $ ls`",
+        category: "mainframe",
+        hash: "fc62792efccc9f6dea2615b593e3474551786cc2b4a94cce38a753cc6895ac6d",
+        points: 100
+    },
+    {
+        id: 9,
+        title: "Stegosaurus",
+        description: "",
+        category: "forensics",
+        hash: "",
+        points: 300
+    },
+    {
+        id: 10,
+        title: "Just like Jenga",
+        description: "[bufferoverflow.com](https://stackoverflow.com/questions/574159/what-is-a-buffer-overflow-and-how-do-i-cause-one)",
+        category: "pwn",
+        hash: "",
+        points: 300
+    },
+    {
+        id: 12,
+        title: "A good workman never blames his ____tools",
+        description: "[cgs.jpg](cgs.jpg)",
+        category: "forensics",
+        hash: "df8893e6d4b2aba4dc3d2a941964050a85461e06bbb0e4421a44e1be0752744b",
+        points: 200
+    },
+    {
+        id: 13,
+        title: "GET OUT!",
+        description: "Leave the room within the time limit",
+        category: "misc",
+        hash: "eb6e91fcbf8d2689fe434691e0c4b22ac925ca602569481f0e6a4d7023b578eb",
+        points: 100
+    },
+    {
+        id: 14,
+        title: "C-2P0",
+        description: "This is not the flag you are looking for",
+        category: "mainframe",
+        hash: "80334a99fef69b7d295484060c46894ec431be2e1959e3c753d1e589105f01a3",
+        points: -100
+    },
+    {
+        id: 15,
+        title: "Is this what the internet sounds like?",
+        description: "KRKKRRRRK... shhhhhhhh-BEEEP-beep-beep-beep... krrrrrrr-KSSHHHHHHHH-eeeEEEeee-- BOOOOoooo--SKKKKKKKKkkkkkk...\n\nFile: [flag.wav](flag.wav)",
+        category: "forensics",
+        hash: "c3d27272f6b1bb4acd41ae9ad214d3a20f778184d729a97cca3b483d6ce44777",
+        points: 200
+    },
+    {
+        id: 16,
+        title: "Someone call an exterminator",
+        description: "No one likes bugs",
+        category: "room",
+        hash: "7caaf5ae99b91ab9eaee2919ec385a785ae5fb9c600771710d9a2e9437095d8f",
+        points: 100
+    },
+    {
+        id: 16,
+        title: "That's the sound of the police",
+        description: "🚨 weewaaweewaa 🚨",
+        category: "crypto",
+        hash: "1d87b32e4813cc23f8d7ba22c9332e9ad9b59363d92b1e5c9a5c53cc363c8077",
+        points: 100
+    },
+];
+
+let totalScore = 0;
+let solved = {};
+let activeFilter = "all";
+
+const challengesContainer = document.getElementById("challenges");
+const filterBar = document.getElementById("filterBar");
+const modal = document.getElementById("challengeModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDescription = document.getElementById("modalDescription");
+const modalPoints = document.getElementById("modalPoints");
+const modalCategory = document.getElementById("modalCategory");
+const feedback = document.getElementById("feedback");
+const scoreboard = document.getElementById("scoreboard");
+const flagForm = document.getElementById("flagForm");
+const flagInput = document.getElementById("flagInput");
+
+let currentChallenge = null;
+
+/* Render category filter buttons */
+function renderFilters() {
+    const categories = ["all", ...new Set(challenges.map(ch => ch.category))];
+    filterBar.innerHTML = "";
+    categories.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.classList.add("filterBtn", cat);
+        btn.textContent = cat.toUpperCase();
+        if (cat === activeFilter) btn.classList.add("active");
+        btn.onclick = () => {
+            activeFilter = cat;
+            renderFilters();
+            renderChallenges();
+        };
+        filterBar.appendChild(btn);
+    });
+}
+
+/* Render challenges (filtered by category) */
+function renderChallenges() {
+    challengesContainer.innerHTML = "";
+    challenges
+        .filter(ch => activeFilter === "all" || ch.category === activeFilter)
+        .forEach(ch => {
+            const div = document.createElement("div");
+            div.classList.add("challenge", ch.category);
+            if (solved[ch.id]) div.classList.add("solved");
+            div.innerHTML = `
+                <h3>${ch.title}</h3>
+                <p>${ch.points} points</p>
+                ${solved[ch.id] ? "<p style='color:#00ff88'>✔ Solved</p>" : ""}
+            `;
+            div.onclick = () => openChallenge(ch);
+            challengesContainer.appendChild(div);
+        });
+}
+
+/* Modal controls */
+function openChallenge(challenge) {
+    currentChallenge = challenge;
+    modalTitle.textContent = challenge.title;
+    modalDescription.innerHTML = parseMarkdown(challenge.description);
+    modalPoints.textContent = challenge.points;
+    modalCategory.textContent = challenge.category.toUpperCase();
+    feedback.textContent = "";
+    flagInput.value = "";
+    modal.style.display = "flex";
+}
+
+document.getElementById("closeBtn").onclick = () => {
+    modal.style.display = "none";
+};
+
+window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+});
+
+/* Flag submission */
+flagForm.onsubmit = async (e) => {
+    e.preventDefault();
+    const userFlag = flagInput.value.trim();
+    const hashedFlag = await sha256(userFlag);
+    console.log(hashedFlag);
+
+    if (hashedFlag === currentChallenge.hash) {
+        if (!solved[currentChallenge.id]) {
+            totalScore += currentChallenge.points;
+            solved[currentChallenge.id] = true;
+            scoreboard.textContent = totalScore;
+            feedback.style.color = "#00ff88";
+            feedback.textContent = "✅ Correct! +" + currentChallenge.points + " points.";
+            renderChallenges();
+        } else {
+            feedback.style.color = "#ffaa00";
+            feedback.textContent = "⚠️ Already solved this one.";
+        }
+    } else {
+        feedback.style.color = "#ff4444";
+        feedback.textContent = "❌ Incorrect flag.";
+    }
+};
+
+renderFilters();
+renderChallenges();
+</script>
+
+</body>
+</html>
