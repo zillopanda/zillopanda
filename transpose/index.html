@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transposer</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#121212">
+    <link rel="apple-touch-icon" href="/logo-iOS.png"/>
+    <link rel="icon" href="/logo-iOS.png" type="image/png"/>
+    <link href="logo.png" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+<body class="dark-mode" id="body">
+    <h1>Note Transposer</h1>
+    <div class="toggle-switch">
+        <input type="checkbox" id="darkModeToggle">
+        <label style="padding-left: 35px;" for="darkModeToggle"></label>
+    </div>
+    <form id="transposeForm">
+        <label for="originalNote">Original Key:</label>
+        <table id="originalNoteButtons" class="note-buttons">
+            <tr>
+                <td><button type="button" class="note-button original" id="C" onclick="selectOriginalNote('C')">C</button></td>
+                <td><button type="button" class="note-button original" id="Db" onclick="selectOriginalNote('Db')">C#/Db</button></td>
+                <td><button type="button" class="note-button original" id="D" onclick="selectOriginalNote('D')">D</button></td>
+                <td><button type="button" class="note-button original" id="Eb" onclick="selectOriginalNote('Eb')">D#/Eb</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button original" id="E" onclick="selectOriginalNote('E')">E</button></td>
+                <td><button type="button" class="note-button original selected" id="F" onclick="selectOriginalNote('F')">F</button></td>
+                <td><button type="button" class="note-button original" id="Gb" onclick="selectOriginalNote('Gb')">F#/Gb</button></td>
+                <td><button type="button" class="note-button original" id="G" onclick="selectOriginalNote('G')">G</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button original" id="Ab" onclick="selectOriginalNote('Ab')">G#/Ab</button></td>
+                <td><button type="button" class="note-button original" id="A" onclick="selectOriginalNote('A')">A</button></td>
+                <td><button type="button" class="note-button original" id="Bb" onclick="selectOriginalNote('Bb')">A#/Bb</button></td>
+                <td><button type="button" class="note-button original" id="B" onclick="selectOriginalNote('B')">B</button></td>
+            </tr>
+        </table>
+        <input type="text" id="originalNote" name="originalNote" value="F" placeholder="e.g., 'C', 'Ab', 'A'" required style="display: none;">
+        <br>
+        <label for="targetKey">Target Key:</label>
+        <table id="secondNoteButtons" class="note-buttons">
+            <tr>
+                <td><button type="button" class="note-button target" id="C" onclick="selectSecondNote('C')">C</button></td>
+                <td><button type="button" class="note-button target" id="Db" onclick="selectSecondNote('Db')">C#/Db</button></td>
+                <td><button type="button" class="note-button target" id="D" onclick="selectSecondNote('D')">D</button></td>
+                <td><button type="button" class="note-button target selected" id="Eb" onclick="selectSecondNote('Eb')">D#/Eb</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button target" id="E" onclick="selectSecondNote('E')">E</button></td>
+                <td><button type="button" class="note-button target" id="F" onclick="selectSecondNote('F')">F</button></td>
+                <td><button type="button" class="note-button target" id="Gb" onclick="selectSecondNote('Gb')">F#/Gb</button></td>
+                <td><button type="button" class="note-button target" id="G" onclick="selectSecondNote('G')">G</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button target" id="Ab" onclick="selectSecondNote('Ab')">G#/Ab</button></td>
+                <td><button type="button" class="note-button target" id="A" onclick="selectSecondNote('A')">A</button></td>
+                <td><button type="button" class="note-button target" id="Bb" onclick="selectSecondNote('Bb')">A#/Bb</button></td>
+                <td><button type="button" class="note-button target" id="B" onclick="selectSecondNote('B')">B</button></td>
+            </tr>
+        </table>
+        <input type="text" id="targetKey" name="targetKey" value="Eb" placeholder="e.g., 'D', 'Bb', 'G'" required style="display: none;">
+        <br>
+        <label for="secondNotes">Notes to transpose</label>
+        <table id="secondNoteButtons" class="note-buttons">
+            <tr>
+                <td><button type="button" class="note-button transpose" id="C" onclick="selectTransposeNote('C')">C</button></td>
+                <td><button type="button" class="note-button transpose" id="Db" onclick="selectTransposeNote('Db')">C#/Db</button></td>
+                <td><button type="button" class="note-button transpose" id="D" onclick="selectTransposeNote('D')">D</button></td>
+                <td><button type="button" class="note-button transpose" id="Eb" onclick="selectTransposeNote('Eb')">D#/Eb</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button transpose" id="E" onclick="selectTransposeNote('E')">E</button></td>
+                <td><button type="button" class="note-button transpose" id="F" onclick="selectTransposeNote('F')">F</button></td>
+                <td><button type="button" class="note-button transpose" id="Gb" onclick="selectTransposeNote('Gb')">F#/Gb</button></td>
+                <td><button type="button" class="note-button transpose" id="G" onclick="selectTransposeNote('G')">G</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="note-button transpose" id="Ab" onclick="selectTransposeNote('Ab')">G#/Ab</button></td>
+                <td><button type="button" class="note-button transpose" id="A" onclick="selectTransposeNote('A')">A</button></td>
+                <td><button type="button" class="note-button transpose" id="Bb" onclick="selectTransposeNote('Bb')">A#/Bb</button></td>
+                <td><button type="button" class="note-button transpose" id="B" onclick="selectTransposeNote('B')">B</button></td>
+            </tr>
+        </table>
+        <input type="text" id="secondNotes" name="secondNotes" placeholder="e.g., 'F', 'Bb', 'C'" required style="display: none;">
+        <!-- <br>
+        <button type="button" onclick="transposeNotes()">Transpose</button> -->
+    </form>
+    <div id="hiddenBeforeResult" style="display: none;">
+        <br>
+        <h2>Transposed Notes</h2>
+        <p id="result"></p>
+    </div>
+
+    <script src="transpose.js"></script>
+    <script>
+        var i = 0
+        // JavaScript to toggle dark mode
+        const toggleSwitch = document.getElementById('darkModeToggle');
+        toggleSwitch.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+            if (i == 0) {
+                document.querySelector("meta[name='theme-color']").content = "#f4f4f4";
+                i = 1
+            } else {
+                document.querySelector("meta[name='theme-color']").content = "#121212";
+                i = 0
+            }
+            console.log(i)
+        });
+
+        function selectOriginalNote(note) {
+            const buttons = document.querySelectorAll('.original');
+            buttons.forEach(button => button.classList.remove('selected'));
+            document.querySelector(`button[onclick="selectOriginalNote('${note}')"]`).classList.add('selected');
+            document.getElementById('originalNote').value = note;
+            transposeNotes();
+        }
+        
+        function selectSecondNote(note) {
+            const buttons = document.querySelectorAll('.target');
+            buttons.forEach(button => button.classList.remove('selected'));
+            document.querySelector(`button[onclick="selectSecondNote('${note}')"]`).classList.add('selected');
+            document.getElementById('targetKey').value = note;
+            transposeNotes();
+        }
+
+        function selectTransposeNote(note) {
+            const secondNotesInput = document.getElementById('secondNotes');
+            const noteArray = secondNotesInput.value ? secondNotesInput.value.split(',') : [];
+            const noteIndex = noteArray.indexOf(note);
+
+            if (noteIndex === -1) {
+                noteArray.push(note);
+                document.querySelector(`button[onclick="selectTransposeNote('${note}')"]`).classList.add('selected');
+            } else {
+                noteArray.splice(noteIndex, 1);
+                document.querySelector(`button[onclick="selectTransposeNote('${note}')"]`).classList.remove('selected');
+            }
+
+            secondNotesInput.value = noteArray.join(',');
+            transposeNotes();
+        }
+    </script>
+</body>
+</html>

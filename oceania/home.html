@@ -1,0 +1,138 @@
+<html>
+<head>
+  <link rel="stylesheet" href="css.css">
+  <title>Oceania</title>
+  <link href="Oceania-2019-logo-new-colours-gradient.png" rel="shortcut icon">
+  <script language="JavaScript">
+      /*
+      var password;
+      var pass1="oceania19";
+      password=prompt('Enter Password To View Page','');
+      if (password==pass1)
+      	var i = 1;
+      else
+      {
+      window.location.replace("index.html");
+      }
+      */
+    </script>
+</head>
+<body>
+  <ul class="nav">
+    <li><a href="home.html" class="activeHome">Home</a></li>
+    <li><a href="blog.html" class="">Blog</a></li>
+    <li><a href="videos.html" class="">Videos</a></li>
+    <li><a class="disabled">Fullscreen Countdown</a></li>
+  </ul>
+  <h1>Oceania</h1>
+  <div class="block">
+      <a href="blog.html#latest">Go To Latest Post</a>
+    </div>
+  <h3>This is my blog that I will update whenever I can with photos and information about Oceania.</h3>
+
+  <div class="block">
+    <h2>Get an e-mail whenever the blog is updated!</h2>
+
+<form action="mailto:zillopanda@gmail.com?subject=Blog Update" method="post" enctype="text/plain">
+Name:<br>
+<input type="text" name="name"><br>
+Your e-mail:<br>
+<input type="text" name="mail"><br>
+<input type="submit" value="Send">
+<input type="reset" value="Reset">
+</form>
+  </div>
+  <div class="main">
+    <h2>Itinerary</h2>
+    <table>
+  <tr>
+    <th>Day</th>
+    <th>Event</th>
+    <th>Location</th>
+  </tr>
+  <tr>
+    <td>Sat, 28 September 2019</td>
+    <td><a href="blog.html#2">Oceania Sprint</a></td>
+    <td>Wagga Wagga</td>
+  </tr>
+  <tr>
+    <td>Sun, 29 September 2019</td>
+    <td><a href="blog.html#3">Australian Long</a></td>
+    <td>Cootamumdra</td>
+  </tr>
+  <tr>
+    <td>Mon, 30 September 2019</td>
+    <td><a href="blog.html#4">Oceania/Australian Relay</a></td>
+    <td>Cootamumdra</td>
+  </tr>
+  <tr>
+    <td>Tue, 1 October 2019</td>
+    <td><a href="blog.html#5">Schools Sprint/Public Day 1</a></td>
+    <td>Wagga Wagga</td>
+  </tr>
+  <tr>
+    <td>Wed, 2 October 2019</td>
+    <td><a href="blog.html#6">Schools Long/Public Day 2</a></td>
+    <td>Wagga Region</td>
+  </tr>
+  <tr>
+    <td>Thu, 3 October 2019</td>
+    <td><a href="blog.html#7">Schools Relay/Public Day 3</a></td>
+    <td>Wagga Region</td>
+  </tr>
+  <tr>
+    <td>Fri, 4 October 2019</td>
+    <td><a href="blog.html#8">Rest Day</a></td>
+    <td>Transit Day</td>
+  </tr>
+  <tr>
+    <td>Sat, 5 October 2019</td>
+    <td><a href="blog.html#9">Oceania Long</a></td>
+    <td>Wangaratta</td>
+  </tr>
+  <tr>
+    <td>Sun, 6 October 2019</td>
+    <td><a href="blog.html#latest">Oceania Middle</a></td>
+    <td>Beechworth</td>
+  </tr>
+</table>
+  </div>
+</body>
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Oct 7, 2019 17:00:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+// Get today's date and time
+var now = new Date().getTime();
+
+// Find the distance between now and the count down date
+var distance = countDownDate - now;
+
+// Time calculations for days, hours, minutes and seconds
+var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+// Display the result in the element with id="demo"
+document.getElementById("demo").innerHTML = "Returning in " + days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+
+// If the count down is finished, write some text
+if (distance < 0) {
+  clearInterval(x);
+  document.getElementById("demo").innerHTML = "Home";
+}
+}, 1000);
+</script>
+<script>
+  var myVideo = document.getElementById("video");
+  
+  function play() {  
+    myVideo.play(); 
+} 
+</script>
+</html>

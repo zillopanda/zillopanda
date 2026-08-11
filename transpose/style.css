@@ -1,0 +1,220 @@
+/* style.css */
+
+/* Reset some default styles for consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Set a nice font and background color */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Style the form and its elements */
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin-top: 20px;
+}
+
+/* Dark mode form styling */
+body.dark-mode form {
+    background: #1e1e1e;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Form elements styling */
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+table {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Note buttons container */
+.note-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+/* Note button styling */
+.note-button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.note-button:hover {
+    background-color: #0056b3;
+}
+
+.note-button.selected {
+    background-color: #00b321;
+}
+
+/* Dark mode button styling */
+body.dark-mode .note-button {
+    background-color: #0056b3;
+}
+
+body.dark-mode .note-button:hover,
+body.dark-mode .note-button.selected {
+    background-color: #137f00;
+}
+
+/* Form elements styling */
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+body.dark-mode form input {
+    background: #333;
+    border: 1px solid #555;
+    color: #e0e0e0;
+}
+
+/* Style the button */
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Dark mode button styling */
+body.dark-mode form button {
+    background-color: #0056b3;
+}
+
+form button:hover {
+    background-color: #003f7f;
+}
+
+/* Header and result styling */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#result {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* Dark mode result styling */
+body.dark-mode #result {
+    background: #1e1e1e;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    #result {
+        padding: 15px;
+    }
+}
+
+/* Dark mode toggle switch */
+.toggle-switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.toggle-switch input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-switch label {
+    background-color: #ccc;
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 4px;
+    position: relative;
+    width: 40px;
+    height: 20px;
+}
+
+.toggle-switch label:before {
+    background-color: #fff;
+    border-radius: 50%;
+    content: "";
+    height: 16px;
+    position: absolute;
+    top: 4.5px;
+    left: 4px;
+    width: 16px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.toggle-switch input[type="checkbox"]:checked + label {
+    background-color: #007BFF;
+}
+
+.toggle-switch input[type="checkbox"]:checked + label:before {
+    transform: translateX(16px);
+}
