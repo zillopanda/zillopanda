@@ -38,9 +38,10 @@ button:active{transform:scale(.96)}
 .tabs{display:flex;gap:6px;margin:0 0 14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
 .tabs button{flex:1;border:0;background:transparent;padding:9px;border-radius:9px;font-weight:600;color:var(--mut)}
 .tabs button.on{background:var(--acc);color:#fff}
-.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:5;display:flex;width:min(280px,calc(100% - 32px));padding:5px;border-radius:999px;background:rgba(255,255,255,.42);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid rgba(255,255,255,.65);box-shadow:0 8px 30px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(255,255,255,.2)}
-.dock .knob{position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:rgba(255,255,255,.72);box-shadow:0 2px 10px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.95);transition:transform .38s cubic-bezier(.3,1.35,.5,1)}
-.dock[data-tab=edit] .knob{transform:translateX(100%)}
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:5;display:flex;width:min(340px,calc(100% - 32px));padding:5px;border-radius:999px;background:rgba(255,255,255,.42);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid rgba(255,255,255,.65);box-shadow:0 8px 30px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(255,255,255,.2)}
+.dock .knob{position:absolute;top:5px;bottom:5px;left:5px;width:calc(33.333% - 3.333px);border-radius:999px;background:rgba(255,255,255,.72);box-shadow:0 2px 10px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.95);transition:transform .38s cubic-bezier(.3,1.35,.5,1)}
+.dock[data-tab=history] .knob{transform:translateX(100%)}
+.dock[data-tab=edit] .knob{transform:translateX(200%)}
 #pSettings{padding:0;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;margin-left:auto}
 .srow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-weight:500;cursor:pointer}
 .sw{appearance:none;-webkit-appearance:none;flex:none;width:51px;height:31px;border-radius:999px;background:rgba(120,120,128,.32);position:relative;transition:background .2s;cursor:pointer;border:0;margin:0}
@@ -49,6 +50,16 @@ button:active{transform:scale(.96)}
 .sw:checked::after{transform:translateX(20px)}
 .gl{flex:1 1 100%;justify-content:space-between;color:var(--ink);font-size:15px;font-weight:500;padding:11px 0;border-top:1px solid var(--line)}
 .gl>input[type=number],.gl>select{min-width:112px}
+.hgroup{font-weight:700;font-size:17px;margin:18px 0 8px}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.hitem{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;border-radius:20px;text-align:center}
+.hitem .hint{margin:0}
+.badge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px}
+.b-failed{background:rgba(214,69,69,.18);color:#d64545}
+.b-solved{background:rgba(31,157,85,.18);color:#1f9d55}
+.b-perfect{background:linear-gradient(90deg,#f5d90a,#fb8c00);color:#3a2a00}
+.b-progress{background:rgba(47,93,224,.18);color:var(--acc)}
+@media (prefers-color-scheme:dark){.hitem{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);box-shadow:0 4px 14px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.22)}}
 .row:has(>.gl){gap:0}
 .split{display:inline-flex}
 .split button:first-child{border-radius:999px 0 0 999px;padding-right:13px}
@@ -127,7 +138,12 @@ button:active{transform:scale(.96)}
     <button id="pSettings" aria-label="Settings"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
   </div>
 </div>
-<nav class="dock" id="dock" data-tab="play" aria-label="Mode"><span class="knob"></span><button id="tabBtnPlay" class="on">Play</button><button id="tabBtnEdit">Editor</button></nav>
+<div id="tabHist" hidden>
+  <p class="sub">Every level you've played on this device. Tap one to replay it.</p>
+  <div id="histList"></div>
+  <div class="row" style="margin-top:14px"><button id="histClear">Clear history</button></div>
+</div>
+<nav class="dock" id="dock" data-tab="play" aria-label="Mode"><span class="knob"></span><button id="tabBtnPlay" class="on">Play</button><button id="tabBtnHist">History</button><button id="tabBtnEdit">Editor</button></nav>
 <div id="smodal"><div class="card" role="dialog" aria-modal="true" style="width:100%;max-width:420px;margin:0">
   <div class="row" style="justify-content:space-between;margin-bottom:6px"><strong>Settings</strong><button id="sClose" aria-label="Close">✕</button></div>
   <div id="settingsList"></div>
@@ -371,7 +387,7 @@ function startPlay(force){
   const N=R*C,endAt=new Int16Array(N),ends={};
   for(let p=0;p<N;p++){const v=grid[Math.floor(p/C)][p%C];if(v){endAt[p]=v;(ends[v]=ends[v]||[]).push(p);}}
   const cp=a=>a.map(r=>r.slice());
-  P={R,C,N,ids,endAt,ends,blk:cp(blk),hw:cp(hw),vw:cp(vw),fill:$('fill').checked,paths:{},moves:0,celebrated:false};
+  P={R,C,N,ids,endAt,ends,blk:cp(blk),hw:cp(hw),vw:cp(vw),fill:$('fill').checked,paths:{},moves:0,celebrated:false};trackLevel();
   ids.forEach(i=>P.paths[i]=[]);
   renderPlay();
 }
@@ -448,20 +464,22 @@ pb.addEventListener('pointermove',e=>{
   for(let i=1;i<=n;i++)visit(cellAt(drag.x+dx*i/n,drag.y+dy*i/n));
   drag.x=x;drag.y=y;renderPlay();
 });
-const endDrag=()=>{if(drag){const changed=snapPaths()!==drag.snap;drag=null;if(changed)P.moves++;renderPlay();syncWin();}};
+const endDrag=()=>{if(drag){const changed=snapPaths()!==drag.snap;drag=null;if(changed)P.moves++;renderPlay();syncWin();recordProgress();}};
 ['pointerup','pointercancel','lostpointercapture'].forEach(t=>pb.addEventListener(t,endDrag));
 pb.addEventListener('contextmenu',e=>e.preventDefault());
 $('pReset').onclick=()=>{if(P){P.ids.forEach(i=>P.paths[i]=[]);P.moves=0;P.celebrated=false;renderPlay();syncWin();}};
 $('pShare').onclick=()=>$('share').onclick();
 function showTab(t){
   $('dock').dataset.tab=t;
-  $('tabEdit').hidden=t!=='edit';$('tabPlay').hidden=t!=='play';
-  $('tabBtnEdit').classList.toggle('on',t==='edit');$('tabBtnPlay').classList.toggle('on',t==='play');
+  $('tabEdit').hidden=t!=='edit';$('tabPlay').hidden=t!=='play';$('tabHist').hidden=t!=='history';
+  $('tabBtnEdit').classList.toggle('on',t==='edit');$('tabBtnPlay').classList.toggle('on',t==='play');$('tabBtnHist').classList.toggle('on',t==='history');
   status('');
   if(t==='play'){startPlay();if(P)renderPlay();}
+  if(t==='history')renderHistory();
 }
 $('tabBtnEdit').onclick=()=>showTab('edit');
 $('tabBtnPlay').onclick=()=>showTab('play');
+$('tabBtnHist').onclick=()=>showTab('history');
 // ---------- Level generator ----------
 function generateLevel(nr,nc,o){
   o=o||{};
@@ -667,6 +685,88 @@ $('nextBtn').onclick=()=>{
   $('rows').value=nr;$('cols').value=nc;$('fill').checked=true;fillNote(L);
   $('cur').value=nextNum();draw();status('');
   startPlay(true);
+};
+// ---------- Level history ----------
+let hist=[];
+try{hist=JSON.parse(localStorage.getItem('numberlink-history')||'[]');if(!Array.isArray(hist))hist=[];}catch(e){hist=[];}
+function saveHist(){try{localStorage.setItem('numberlink-history',JSON.stringify(hist));}catch(e){}}
+function entryFor(sig){
+  let e=hist.find(x=>x.id===sig);
+  if(!e){
+    const sz=`${P.R}x${P.C}`;
+    const n=hist.filter(x=>x.size===sz).reduce((m,x)=>Math.max(m,x.n||0),0)+1;
+    e={id:sig,code:sig,created:Date.now(),size:sz,n,pairs:P.ids.length,tried:false,solved:false,perfect:false,best:0};
+    hist.push(e);
+  }
+  return e;
+}
+function trackLevel(){
+  hist=hist.filter(x=>x.id===playSig||x.tried||x.solved);
+  entryFor(playSig);
+  while(hist.length>150){const i=hist.findIndex(x=>x.id!==playSig);if(i<0)break;hist.splice(i,1);}
+  saveHist();
+}
+function recordProgress(){
+  if(!P)return;
+  const e=entryFor(playSig);
+  if(P.moves>0)e.tried=true;
+  if(P.solved){e.solved=true;e.best=e.best?Math.min(e.best,P.moves):P.moves;if(P.moves===P.ids.length)e.perfect=true;}
+  saveHist();
+}
+function parseCode(code){
+  try{
+    code=code.replace(/-/g,'+').replace(/_/g,'/');while(code.length%4)code+='=';
+    const [dim,g,b,h,v]=atob(code).split('~');
+    const [nr,nc]=dim.split('x').map(Number),N=nr*nc,gs=g.split('.').map(Number);
+    if(!(nr>=2&&nc>=2)||gs.length!==N)return null;
+    const mk=f=>Array.from({length:nr},(_,r)=>Array.from({length:nc},(_,c)=>f(r*nc+c)));
+    return {nr,nc,g:mk(p=>gs[p]),b:mk(p=>b[p]==='1'),h:mk(p=>h[p]==='1'),v:mk(p=>v[p]==='1')};
+  }catch(e){return null;}
+}
+function thumb(L){
+  const sc=64/Math.max(L.nr,L.nc);
+  let t=`<svg width='${L.nc*sc}' height='${L.nr*sc}' viewBox='0 0 ${L.nc} ${L.nr}' style='display:block'>`;
+  t+=`<rect width='${L.nc}' height='${L.nr}' rx='.15' fill='${css('--cell')}' stroke='${css('--line')}' stroke-width='.06'/>`;
+  for(let r=0;r<L.nr;r++)for(let c=0;c<L.nc;c++){
+    if(L.b[r][c])t+=`<rect x='${c}' y='${r}' width='1' height='1' fill='${css('--ink')}'/>`;
+    const v=L.g[r][c];
+    if(v)t+=`<circle cx='${c+.5}' cy='${r+.5}' r='.36' fill='${color(v)}' stroke='rgba(0,0,0,.3)' stroke-width='.06'/>`;
+    if(L.h[r][c]&&r<L.nr-1)t+=`<line x1='${c}' y1='${r+1}' x2='${c+1}' y2='${r+1}' stroke='${css('--ink')}' stroke-width='.14' stroke-linecap='round'/>`;
+    if(L.v[r][c]&&c<L.nc-1)t+=`<line x1='${c+1}' y1='${r}' x2='${c+1}' y2='${r+1}' stroke='${css('--ink')}' stroke-width='.14' stroke-linecap='round'/>`;
+  }
+  return t+'</svg>';
+}
+function renderHistory(){
+  const list=$('histList'),cur=P?playSig:'';
+  const items=hist.filter(e=>e.id===cur||e.tried||e.solved);
+  if(!items.length){list.innerHTML="<p class='hint'>No levels played yet. Start one from the Play tab.</p>";return;}
+  const groups={};items.forEach(e=>(groups[e.size]=groups[e.size]||[]).push(e));
+  const keys=Object.keys(groups).sort((a,b)=>{const [ar,ac]=a.split('x').map(Number),[br,bc]=b.split('x').map(Number);return ar*ac-br*bc||ar-br;});
+  list.innerHTML='';
+  for(const k of keys){
+    const t=document.createElement('div');t.className='hgroup';t.textContent=k.replace('x','×');list.appendChild(t);
+    const gr=document.createElement('div');gr.className='hgrid';
+    groups[k].sort((a,b)=>a.created-b.created).forEach(e=>{
+      const b=document.createElement('button');b.className='hitem';
+      const st=e.perfect?['perfect','★ Perfect']:e.solved?['solved','Solved']:e.id===cur?['progress','In progress']:['failed','Failed'];
+      const L=parseCode(e.code);
+      const sub=e.solved?`Best: ${e.best} moves`:`${e.pairs} pairs`;
+      b.innerHTML=(L?thumb(L):'')+`<div style='font-weight:600'>Level ${e.n}</div><span class='badge b-${st[0]}'>${st[1]}</span><div class='hint'>${sub}</div>`;
+      b.onclick=()=>replay(e.code);
+      gr.appendChild(b);
+    });
+    list.appendChild(gr);
+  }
+}
+function replay(code){
+  if(P&&code===playSig&&!P.solved){showTab('play');return;}
+  if(decode(code)){showTab('play');startPlay(true);}
+}
+let clearArm=false;
+$('histClear').onclick=()=>{
+  const b=$('histClear');
+  if(!clearArm){clearArm=true;b.textContent='Tap again to confirm';setTimeout(()=>{clearArm=false;b.textContent='Clear history';},3000);return;}
+  clearArm=false;b.textContent='Clear history';hist=[];saveHist();renderHistory();
 };
 // ---------- Settings ----------
 const SETTINGS=[ // add more entries here: {key,title}
