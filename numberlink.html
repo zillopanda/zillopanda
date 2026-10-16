@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Numberlink Solver</title>
+<title>Numberlink</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Numberlink">
+<meta name="theme-color" content="#2f5de0">
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 --bg:#f7f6f2;--card:#fff;--ink:#1d1d1b;--mut:#6b6a64;--line:#d9d6cc;--acc:#2f5de0;--cell:#fbfaf6}
@@ -11,8 +16,8 @@
 :root[data-theme="dark"]{--bg:#161615;--card:#212120;--ink:#ecebe6;--mut:#9a988f;--line:#3a3935;--acc:#7b9bff;--cell:#1b1b1a}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
-main{max-width:720px;margin:0 auto;padding:20px 16px 40px}
+body{margin:0;background:radial-gradient(60% 40% at 12% 0%,rgba(47,93,224,.16),transparent 70%),radial-gradient(50% 40% at 92% 35%,rgba(255,79,163,.11),transparent 70%),radial-gradient(60% 40% at 30% 100%,rgba(25,211,218,.12),transparent 70%),var(--bg);background-attachment:fixed;color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 120px}
 h1{font-size:22px;margin:0 0 4px}
 p.sub{color:var(--mut);margin:0 0 16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
@@ -20,20 +25,48 @@ p.sub{color:var(--mut);margin:0 0 16px}
 label{color:var(--mut);font-size:13px;display:flex;align-items:center;gap:6px}
 select{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--cell);color:var(--ink);font:inherit}
 input[type=number]{width:60px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--cell);color:var(--ink);font:inherit}
-button{padding:8px 14px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
-button.p{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
-button:hover{filter:brightness(.96)}
-#board{width:100%;max-width:560px;display:block;margin:0 auto;touch-action:manipulation;user-select:none}
-#status{min-height:22px;margin-top:10px;font-weight:500;text-align:center}
-#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:16px;z-index:10}
-#modal.open{display:flex}
+button{padding:9px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.65);background:rgba(255,255,255,.45);color:var(--ink);font:inherit;cursor:pointer;backdrop-filter:blur(14px) saturate(170%);-webkit-backdrop-filter:blur(14px) saturate(170%);box-shadow:0 4px 14px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.8),inset 0 -1px 0 rgba(255,255,255,.15);transition:transform .15s,background .2s}
+button.p{background:linear-gradient(rgba(74,120,248,.93),rgba(40,86,226,.93));border-color:rgba(255,255,255,.4);color:#fff;font-weight:600;box-shadow:0 6px 18px rgba(47,93,224,.4),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,0,0,.14)}
+button:hover{background:rgba(255,255,255,.62)}
+button.p:hover{background:linear-gradient(rgba(94,137,255,.96),rgba(56,102,240,.96))}
+button:active{transform:scale(.96)}
+@media (prefers-color-scheme:dark){.row button:not(.p){background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);box-shadow:0 4px 14px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.22)}.row button:not(.p):hover{background:rgba(255,255,255,.19)}}
+#board,#pboard{width:100%;max-width:560px;display:block;margin:0 auto;touch-action:manipulation;user-select:none}
+#status,#pstatus{min-height:22px;margin-top:10px;font-weight:500;text-align:center}
+#pboard{touch-action:none;-webkit-touch-callout:none}
+#board,#pboard{-webkit-tap-highlight-color:transparent}
+.tabs{display:flex;gap:6px;margin:0 0 14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{flex:1;border:0;background:transparent;padding:9px;border-radius:9px;font-weight:600;color:var(--mut)}
+.tabs button.on{background:var(--acc);color:#fff}
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:5;display:flex;width:min(280px,calc(100% - 32px));padding:5px;border-radius:999px;background:rgba(255,255,255,.42);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid rgba(255,255,255,.65);box-shadow:0 8px 30px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(255,255,255,.2)}
+.dock .knob{position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:rgba(255,255,255,.72);box-shadow:0 2px 10px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.95);transition:transform .38s cubic-bezier(.3,1.35,.5,1)}
+.dock[data-tab=edit] .knob{transform:translateX(100%)}
+#pSettings{padding:0;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;margin-left:auto}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-weight:500;cursor:pointer}
+.sw{appearance:none;-webkit-appearance:none;flex:none;width:51px;height:31px;border-radius:999px;background:rgba(120,120,128,.32);position:relative;transition:background .2s;cursor:pointer;border:0;margin:0}
+.sw::after{content:'';position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .2s}
+.sw:checked{background:#34c759}
+.sw:checked::after{transform:translateX(20px)}
+.gl{flex:1 1 100%;justify-content:space-between;color:var(--ink);font-size:15px;font-weight:500;padding:11px 0;border-top:1px solid var(--line)}
+.gl>input[type=number],.gl>select{min-width:112px}
+.row:has(>.gl){gap:0}
+.split{display:inline-flex}
+.split button:first-child{border-radius:999px 0 0 999px;padding-right:13px}
+.split button:last-child{border-radius:0 999px 999px 0;padding:9px 13px;margin-left:-1px;display:inline-flex;align-items:center}
+.dock button{box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;position:relative;flex:1;border:0;background:transparent;padding:11px 0;border-radius:999px;font-weight:600;color:var(--mut);-webkit-tap-highlight-color:transparent}
+.dock button.on{color:#1d1d1b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dock{background:rgba(44,44,46,.45);border-color:rgba(255,255,255,.16);box-shadow:0 8px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18)}:root:not([data-theme="light"]) .dock .knob{background:rgba(255,255,255,.2);box-shadow:0 2px 10px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.3)}:root:not([data-theme="light"]) .dock button.on{color:#fff}}
+#gmodal,#smodal,#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:16px;z-index:10}
+#modal.open,#smodal.open,#gmodal.open{display:flex}
 .ok{color:#1f9d55}.bad{color:#d64545}
 .hint{color:var(--mut);font-size:13px;margin-top:8px;text-align:center}
 </style>
 </head>
 <body>
 <main>
-<h1>Numberlink Solver</h1>
+<h1>Numberlink</h1>
+
+<div id="tabEdit">
 <p class="sub">Connect each pair of matching letters with a path. Paths can't cross, and (by default) must fill every cell.</p>
 
 <div class="card">
@@ -58,9 +91,47 @@ button:hover{filter:brightness(.96)}
   <button class="p" id="solve">Solve</button>
   
   <button id="clear">Clear all</button>
-  <button id="example">Load example</button>
+  <span class="split"><button id="genOpen">Generate level</button><button id="genCfg" aria-label="Generation settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></span>
   <button id="share">Share / load level</button>
 </div>
+<div id="gmodal"><div class="card" role="dialog" aria-modal="true" style="width:100%;max-width:400px;margin:0">
+  <div class="row" style="justify-content:space-between;margin-bottom:10px"><strong>Generate a level</strong><button id="gClose" aria-label="Close">✕</button></div>
+  <div class="row">
+    <label class="gl">Grid size <span style="display:flex;align-items:center;gap:8px"><input id="gRows" type="number" min="2" max="20" value="5" aria-label="Rows"><span>×</span><input id="gCols" type="number" min="2" max="20" value="5" aria-label="Columns"></span></label>
+    
+    <label class="gl">Letters <input id="gLetters" type="number" min="2" max="26" placeholder="Auto" style="width:72px"></label>
+    <label class="gl">Walls <select id="gWalls"><option value="0">None</option><option value="0.06">Few</option><option value="0.12" selected>Some</option><option value="0.25">Many</option></select></label>
+    <label class="gl">Blocks <select id="gBlocks"><option value="0" selected>None</option><option value="0.03">Few</option><option value="0.06">Some</option><option value="0.1">Many</option></select></label>
+    <label class="gl">Must fill every cell <input type="checkbox" class="sw" id="gFill" checked></label>
+    <button class="p" id="genBtn" style="flex:1 1 100%;margin-top:14px;padding:12px">Generate level</button>
+  </div>
+</div>
+</div><div hidden>
+</div>
+</div>
+<div id="tabPlay" hidden>
+  <p class="sub">Drag from a letter to its match. Paths can't cross walls, blocks or each other. Touch a path to trim it back.</p>
+  <div class="card">
+    <svg id="pboard" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="pstatus"></div>
+    <div id="winBox" hidden style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+      <strong id="winTitle" style="display:block;margin-bottom:10px">Level complete!</strong>
+      
+      <div class="row"><label>Next size <select id="nextSize"></select></label><button class="p" id="nextBtn">Generate new level</button></div>
+    </div>
+  </div>
+  <div class="row">
+    <button class="p" id="pReset">Restart</button>
+    <button id="pNew">New level</button>
+    <button id="pShare">Share / load level</button>
+    <button id="pSettings" aria-label="Settings"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+  </div>
+</div>
+<nav class="dock" id="dock" data-tab="play" aria-label="Mode"><span class="knob"></span><button id="tabBtnPlay" class="on">Play</button><button id="tabBtnEdit">Editor</button></nav>
+<div id="smodal"><div class="card" role="dialog" aria-modal="true" style="width:100%;max-width:420px;margin:0">
+  <div class="row" style="justify-content:space-between;margin-bottom:6px"><strong>Settings</strong><button id="sClose" aria-label="Close">✕</button></div>
+  <div id="settingsList"></div>
+</div></div>
 <div id="modal"><div class="card" role="dialog" aria-modal="true" style="width:100%;max-width:520px;margin:0">
   <div class="row" style="justify-content:space-between;margin-bottom:10px"><strong>Share or load a level</strong><button id="closeBtn" aria-label="Close">✕</button></div>
   <div class="row">
@@ -181,7 +252,7 @@ svg.addEventListener('contextmenu',e=>{
 });
 $('clear').onclick=()=>init(R,C);
 
-$('example').onclick=()=>{
+const loadExample=()=>{
   const ex=[[1,0,0,0,1],[2,3,4,0,0],[0,0,0,3,0],[0,0,0,0,4],[0,0,0,0,2]];
   init(5,5);$('rows').value=$('cols').value=5;grid=ex.map(r=>r.slice());blk[2][2]=true;hw[0][1]=true;$('cur').value='E';draw();
 };
@@ -281,12 +352,352 @@ $('share').onclick=()=>{
 };
 $('copyBtn').onclick=()=>{if($('shareLink').value)copy($('shareLink').value);};
 $('loadBtn').onclick=()=>{
-  if(decode($('shareLink').value)){status('Level loaded.','ok');closeModal();}
+  if(decode($('shareLink').value)){status('Level loaded.','ok');closeModal();if(!$('tabPlay').hidden)startPlay();}
   else shareMsg('Could not read that level link or code.');
 };
-window.addEventListener('hashchange',()=>{const m=location.hash.match(/level=([^&]+)/);if(m&&decode(m[1]))status('Level loaded from link.','ok');});
-$('example').click();
-{const m=(location.hash+location.search).match(/level=([^&]+)/);if(m&&decode(m[1]))status('Level loaded from link.','ok');}
+window.addEventListener('hashchange',()=>{const m=location.hash.match(/level=([^&]+)/);if(m&&decode(m[1])){status('Level loaded from link.','ok');showTab('play');}});
+// ---------- Play tab ----------
+let P=null,drag=null,playSig='';
+const pb=$('pboard');
+function pstat(t,cls){const s=$('pstatus');s.textContent=t;s.className=cls||'';}
+function startPlay(force){
+  const sig=encode();
+  if(!force&&P&&sig===playSig)return;
+  const cn=counts(),ids=Object.keys(cn).map(Number).sort((a,b)=>a-b);
+  P=null;drag=null;playSig=sig;$('winBox').hidden=true;
+  if(!ids.length){pb.innerHTML='';pstat('Build a level in the Editor first.','bad');return;}
+  const bad=ids.find(i=>cn[i]!==2);
+  if(bad){pb.innerHTML='';pstat(`Letter ${toLetters(bad)} must appear exactly twice (found ${cn[bad]}). Fix it in the Editor.`,'bad');return;}
+  const N=R*C,endAt=new Int16Array(N),ends={};
+  for(let p=0;p<N;p++){const v=grid[Math.floor(p/C)][p%C];if(v){endAt[p]=v;(ends[v]=ends[v]||[]).push(p);}}
+  const cp=a=>a.map(r=>r.slice());
+  P={R,C,N,ids,endAt,ends,blk:cp(blk),hw:cp(hw),vw:cp(vw),fill:$('fill').checked,paths:{},moves:0,celebrated:false};
+  ids.forEach(i=>P.paths[i]=[]);
+  renderPlay();
+}
+const isBlk=p=>P.blk[Math.floor(p/P.C)][p%P.C];
+function ownerMap(){const o=new Int16Array(P.N);for(const id of P.ids)for(const p of P.paths[id])o[p]=id;return o;}
+function snapPaths(){return JSON.stringify(P.ids.map(i=>P.paths[i].length>1?P.paths[i]:[]));}
+function isDone(id){const pa=P.paths[id];return pa.length>1&&P.endAt[pa[pa.length-1]]===id;}
+function adj(a,b){
+  const ra=Math.floor(a/P.C),ca=a%P.C,rb=Math.floor(b/P.C),cb=b%P.C;
+  if(ra===rb&&Math.abs(ca-cb)===1)return !P.vw[ra][Math.min(ca,cb)];
+  if(ca===cb&&Math.abs(ra-rb)===1)return !P.hw[Math.min(ra,rb)][ca];
+  return false;
+}
+function visit(p){
+  if(p<0||isBlk(p))return;
+  const id=drag.id,pa=P.paths[id],head=pa[pa.length-1];
+  if(p===head)return;
+  if(pa.length>1&&p===pa[pa.length-2]){pa.pop();return;}
+  if(settings.link&&isDone(id)){
+    const e2=P.endAt[p];
+    if(e2&&e2!==id&&!isDone(e2)){if(snapPaths()!==drag.snap)P.moves++;P.paths[e2]=[p];drag.id=e2;drag.snap=snapPaths();}
+    return;
+  }
+  if(!adj(head,p)||isDone(id))return;
+  const e=P.endAt[p];
+  if(e&&e!==id)return;
+  if(e===id){if(p!==pa[0])pa.push(p);return;}
+  const o=ownerMap()[p];
+  if(o===id){pa.length=pa.indexOf(p)+1;return;}
+  if(o){if(!settings.breakLines)return;const q=P.paths[o];q.length=q.indexOf(p);}
+  pa.push(p);
+}
+function renderPlay(){
+  if(!P)return;
+  pb.setAttribute('viewBox',`0 0 ${P.C*S} ${P.R*S}`);
+  let h='',free=0;const covered=new Set();
+  const xy=p=>`${(p%P.C)*S+S/2},${Math.floor(p/P.C)*S+S/2}`;
+  for(let r=0;r<P.R;r++)for(let c=0;c<P.C;c++){if(!P.blk[r][c])free++;
+    h+=`<rect x='${c*S}' y='${r*S}' width='${S}' height='${S}' fill='${P.blk[r][c]?css('--ink'):css('--cell')}' stroke='${css('--line')}'/>`;}
+  for(const id of P.ids){const pa=P.paths[id];
+    for(const p of pa){covered.add(p);h+=`<rect x='${(p%P.C)*S}' y='${Math.floor(p/P.C)*S}' width='${S}' height='${S}' fill='${color(id)}' opacity='.22'/>`;}
+    if(pa.length>1){const pts=pa.map(xy).join(' ');
+      h+=`<polyline points='${pts}' fill='none' stroke='rgba(0,0,0,.3)' stroke-width='${S*0.34+3}' stroke-linecap='round' stroke-linejoin='round'/>`;
+      h+=`<polyline points='${pts}' fill='none' stroke='${color(id)}' stroke-width='${S*0.34}' stroke-linecap='round' stroke-linejoin='round'/>`;}}
+  for(let r=0;r<P.R;r++)for(let c=0;c<P.C;c++){
+    if(P.hw[r][c]&&r<P.R-1)h+=`<line x1='${c*S}' y1='${(r+1)*S}' x2='${(c+1)*S}' y2='${(r+1)*S}' stroke='${css('--ink')}' stroke-width='7' stroke-linecap='round'/>`;
+    if(P.vw[r][c]&&c<P.C-1)h+=`<line x1='${(c+1)*S}' y1='${r*S}' x2='${(c+1)*S}' y2='${(r+1)*S}' stroke='${css('--ink')}' stroke-width='7' stroke-linecap='round'/>`;}
+  for(const id of P.ids)for(const p of P.ends[id]){
+    const cx=(p%P.C)*S+S/2,cy=Math.floor(p/P.C)*S+S/2,L=toLetters(id);
+    h+=`<circle cx='${cx}' cy='${cy}' r='${S*0.32}' fill='${color(id)}' stroke='rgba(0,0,0,.35)' stroke-width='2'/>`;
+    h+=`<text x='${cx}' y='${cy}' text-anchor='middle' dominant-baseline='central' font-size='${S*(L.length>1?0.25:0.32)}' font-weight='700' fill='${darkText(color(id))?'#1d1d1b':'#fff'}'>${L}</text>`;}
+  pb.innerHTML=h;
+  const done=P.ids.filter(isDone).length;
+  P.solved=done===P.ids.length&&(!P.fill||covered.size===free);
+  if(P.solved)pstat('🎉 Solved!','ok');
+  else pstat(`Connected ${done}/${P.ids.length} \u00b7 Filled ${Math.round(covered.size/free*100)}% \u00b7 Moves ${P.moves}`);
+}
+const pxy=e=>{const b=pb.getBoundingClientRect();return [(e.clientX-b.left)/b.width*P.C*S,(e.clientY-b.top)/b.height*P.R*S];};
+const cellAt=(x,y)=>{const c=Math.floor(x/S),r=Math.floor(y/S);return (c<0||r<0||c>=P.C||r>=P.R)?-1:r*P.C+c;};
+pb.addEventListener('pointerdown',e=>{
+  if(!P)return;e.preventDefault();
+  const [x,y]=pxy(e),p=cellAt(x,y);
+  if(p<0||isBlk(p))return;
+  const snap0=snapPaths();let id=P.endAt[p];
+  if(id)P.paths[id]=[p];
+  else{id=ownerMap()[p];if(!id)return;const pa=P.paths[id];pa.length=pa.indexOf(p)+1;}
+  drag={id,x,y,snap:snap0};$('winBox').hidden=true;
+  try{pb.setPointerCapture(e.pointerId);}catch(_){}
+  renderPlay();
+});
+pb.addEventListener('pointermove',e=>{
+  if(!P||!drag)return;e.preventDefault();
+  const [x,y]=pxy(e),dx=x-drag.x,dy=y-drag.y,n=Math.max(1,Math.ceil(Math.hypot(dx,dy)/(S/4)));
+  for(let i=1;i<=n;i++)visit(cellAt(drag.x+dx*i/n,drag.y+dy*i/n));
+  drag.x=x;drag.y=y;renderPlay();
+});
+const endDrag=()=>{if(drag){const changed=snapPaths()!==drag.snap;drag=null;if(changed)P.moves++;renderPlay();syncWin();}};
+['pointerup','pointercancel','lostpointercapture'].forEach(t=>pb.addEventListener(t,endDrag));
+pb.addEventListener('contextmenu',e=>e.preventDefault());
+$('pReset').onclick=()=>{if(P){P.ids.forEach(i=>P.paths[i]=[]);P.moves=0;P.celebrated=false;renderPlay();syncWin();}};
+$('pShare').onclick=()=>$('share').onclick();
+function showTab(t){
+  $('dock').dataset.tab=t;
+  $('tabEdit').hidden=t!=='edit';$('tabPlay').hidden=t!=='play';
+  $('tabBtnEdit').classList.toggle('on',t==='edit');$('tabBtnPlay').classList.toggle('on',t==='play');
+  status('');
+  if(t==='play'){startPlay();if(P)renderPlay();}
+}
+$('tabBtnEdit').onclick=()=>showTab('edit');
+$('tabBtnPlay').onclick=()=>showTab('play');
+// ---------- Level generator ----------
+function generateLevel(nr,nc,o){
+  o=o||{};
+  if(!o.fillOnly){let L;for(let i=0;i<20;i++){L=generateLevelRaw(nr,nc,o);if(pairsOk(L))return L;}return stripSingles(L);}
+  // keep generating until no solution can leave a gap
+  const t0=performance.now();let last=null;
+  for(let i=0;i<80&&performance.now()-t0<6000;i++){
+    const L=generateLevelRaw(nr,nc,o);if(!pairsOk(L))continue;last=L;
+    const r=looseSolvable(nr,nc,L,Math.min(1500,Math.max(250,6000-(performance.now()-t0))));
+    if(r===false){L.verified=true;return L;}
+  }
+  if(!last)last=stripSingles(generateLevelRaw(nr,nc,o));
+  last.verified=false;return last;
+}
+// every letter must appear exactly twice (no lone letters)
+function pairsOk(L){
+  const cn={};L.g.forEach(r=>r.forEach(v=>{if(v)cn[v]=(cn[v]||0)+1;}));
+  const ks=Object.keys(cn);return ks.length>=1&&ks.every(k=>cn[k]===2);
+}
+function stripSingles(L){
+  const cn={};L.g.forEach(r=>r.forEach(v=>{if(v)cn[v]=(cn[v]||0)+1;}));
+  L.g=L.g.map(r=>r.map(v=>v&&cn[v]!==2?0:v));return L;
+}
+// true: some solution leaves a gap; false: every solution fills the board; null: ran out of time
+function looseSolvable(nr,nc,L,budget){
+  const N=nr*nc,t0=performance.now(),nb=[];
+  for(let p=0;p<N;p++){const r=Math.floor(p/nc),c=p%nc,a=[];
+    if(!L.b[r][c]){
+      if(r>0&&!L.b[r-1][c]&&!L.h[r-1][c])a.push(p-nc);
+      if(r<nr-1&&!L.b[r+1][c]&&!L.h[r][c])a.push(p+nc);
+      if(c>0&&!L.b[r][c-1]&&!L.v[r][c-1])a.push(p-1);
+      if(c<nc-1&&!L.b[r][c+1]&&!L.v[r][c])a.push(p+1);
+    }
+    nb.push(a);}
+  const occ=new Int16Array(N),head={},tgt={},done={},seen={},ids=[];
+  for(let p=0;p<N;p++){const r=Math.floor(p/nc),c=p%nc;
+    if(L.b[r][c])occ[p]=-1;
+    const v=L.g[r][c];
+    if(v){occ[p]=v;if(seen[v])tgt[v]=p;else{seen[v]=1;head[v]=p;ids.push(v);done[v]=false;}}}
+  let left=ids.length,timeout=false,nodes=0;
+  const mark=new Uint8Array(N);
+  const reach=()=>{
+    for(const id of ids){if(done[id])continue;
+      mark.fill(0);const q=[head[id]];mark[head[id]]=1;let ok=false;
+      for(let qi=0;qi<q.length&&!ok;qi++)for(const n of nb[q[qi]]){if(n===tgt[id]){ok=true;break;}if(!occ[n]&&!mark[n]){mark[n]=1;q.push(n);}}
+      if(!ok)return false;}
+    return true;
+  };
+  function dfs(){
+    if(timeout)return false;
+    if(++nodes%256===0&&performance.now()-t0>budget){timeout=true;return false;}
+    if(left===0){for(let p=0;p<N;p++)if(!occ[p])return true;return false;}
+    if(!reach())return false;
+    let best=-1,bm=null;
+    for(const id of ids){if(done[id])continue;const mv=[];
+      for(const n of nb[head[id]])if(!occ[n]||n===tgt[id])mv.push(n);
+      if(!mv.length)return false;
+      if(!bm||mv.length<bm.length){bm=mv;best=id;if(mv.length===1)break;}}
+    const id=best,h=head[id];
+    for(const n of bm){
+      if(n===tgt[id]){done[id]=true;left--;if(dfs())return true;left++;done[id]=false;}
+      else{occ[n]=id;head[id]=n;if(dfs())return true;head[id]=h;occ[n]=0;}
+    }
+    return false;
+  }
+  const found=dfs();
+  return timeout?null:found;
+}
+function generateLevelRaw(nr,nc,o){o=o||{};
+  const N=nr*nc,rnd=n=>Math.floor(Math.random()*n);
+  const nbrs=p=>{const r=Math.floor(p/nc),c=p%nc,a=[];if(r>0)a.push(p-nc);if(r<nr-1)a.push(p+nc);if(c>0)a.push(p-1);if(c<nc-1)a.push(p+1);return a;};
+  // random Hamiltonian path: start from a snake and shuffle it with backbite moves
+  const path=[];for(let r=0;r<nr;r++)for(let i=0;i<nc;i++)path.push(r*nc+(r%2?nc-1-i:i));
+  const pos=new Int32Array(N);
+  const reindex=from=>{for(let i=from;i<N;i++)pos[path[i]]=i;};
+  reindex(0);
+  for(let it=0;it<N*30;it++){
+    if(Math.random()<.5){path.reverse();reindex(0);}
+    const ns=nbrs(path[N-1]).filter(x=>x!==path[N-2]);
+    const j=pos[ns[rnd(ns.length)]];
+    for(let a=j+1,b=N-1;a<b;a++,b--){const t=path[a];path[a]=path[b];path[b]=t;}
+    reindex(j+1);
+  }
+  // cut the path into coloured segments
+  const ml=N>=12?3:2,bl=Array(N).fill(false);
+  const wp=o.walls==null?0.12:o.walls;
+  // optional blocked cells: remove cells from the route, splitting it into pieces
+  const nb=Math.round(N*(o.blocks||0)),cuts=[];
+  for(let tries=0;cuts.length<nb&&tries<400;tries++){
+    const i=ml+rnd(Math.max(1,N-2*ml));
+    if(i>N-1-ml)continue;
+    if(cuts.every(x=>Math.abs(x-i)>ml))cuts.push(i);
+  }
+  cuts.sort((x,y)=>x-y);
+  const pieces=[];let st=0;
+  for(const c of cuts){if(c>st)pieces.push([st,c-1]);bl[path[c]]=true;st=c+1;}
+  if(st<=N-1)pieces.push([st,N-1]);
+  // cut each piece into coloured segments
+  const F=N-cuts.length;
+  let k=o.letters?o.letters:Math.round(Math.sqrt(F)*(o.fillOnly?1.3:0.95));
+  const cap=pieces.map(pc=>Math.max(1,Math.floor((pc[1]-pc[0]+1)/ml)));
+  k=Math.max(2,pieces.length,Math.min(k,cap.reduce((x,y)=>x+y,0),26));
+  const cnt=pieces.map(()=>1);
+  for(let left=k-pieces.length;left>0;){const i=rnd(pieces.length);if(cnt[i]<cap[i]){cnt[i]++;left--;}}
+  const ids=Array.from({length:k},(_,i)=>i+1);
+  for(let i=k-1;i>0;i--){const j=rnd(i+1);[ids[i],ids[j]]=[ids[j],ids[i]];}
+  const g=Array.from({length:nr},()=>Array(nc).fill(0)),bk=Array.from({length:nr},()=>Array(nc).fill(false)),seg=new Int16Array(N);
+  for(let p=0;p<N;p++)if(bl[p])bk[Math.floor(p/nc)][p%nc]=true;
+  let sid=0;
+  pieces.forEach((pc,pi)=>{
+    const len=pc[1]-pc[0]+1,n=cnt[pi],lens=Array(n).fill(ml);
+    for(let i=0;i<len-n*ml;i++)lens[rnd(n)]++;
+    let s=pc[0];
+    lens.forEach(L=>{
+      sid++;
+      for(let t=s;t<s+L;t++)seg[path[t]]=sid;
+      const a=path[s],e=path[s+L-1];
+      g[Math.floor(a/nc)][a%nc]=ids[sid-1];g[Math.floor(e/nc)][e%nc]=ids[sid-1];s+=L;
+    });
+  });
+  // a few walls between cells the solution never joins
+  const h=g.map(r=>r.map(()=>false)),v=g.map(r=>r.map(()=>false));
+  const joined=(p,q)=>seg[p]===seg[q]&&Math.abs(pos[p]-pos[q])===1;
+  for(let p=0;p<N;p++){const r=Math.floor(p/nc),c=p%nc;
+    if(c<nc-1&&seg[p]&&seg[p+1]&&!joined(p,p+1)&&Math.random()<wp)v[r][c]=true;
+    if(r<nr-1&&seg[p]&&seg[p+nc]&&!joined(p,p+nc)&&Math.random()<wp)h[r][c]=true;}
+  return {g,b:bk,h,v};
+}
+function celebrate(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const cv=document.createElement('canvas');
+  cv.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20';
+  const dpr=window.devicePixelRatio||1,W=innerWidth,H=innerHeight;
+  cv.width=W*dpr;cv.height=H*dpr;document.body.appendChild(cv);
+  const g=cv.getContext('2d');g.scale(dpr,dpr);
+  const cols=['#e53935','#2e9e44','#1e6fe0','#f5d90a','#fb8c00','#19d3da','#ff4fa3','#8e44ad'];
+  const mk=(x,y,vx,vy)=>({x,y,vx,vy,r:Math.random()*6,vr:(Math.random()-.5)*.4,s:6+Math.random()*8,c:cols[Math.floor(Math.random()*cols.length)],round:Math.random()<.3});
+  const ps=[];
+  for(let i=0;i<90;i++){const left=i%2===0;ps.push(mk(left?0:W,H*.85,(left?1:-1)*(3+Math.random()*7),-(11+Math.random()*10)));}
+  for(let i=0;i<70;i++)ps.push(mk(Math.random()*W,-20-Math.random()*H*.3,(Math.random()-.5)*2,2+Math.random()*3));
+  let fr=0;
+  (function loop(){
+    fr++;g.clearRect(0,0,W,H);
+    for(const p of ps){
+      p.vy+=.28;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;
+      g.save();g.translate(p.x,p.y);g.rotate(p.r);g.fillStyle=p.c;g.globalAlpha=Math.max(0,Math.min(1,(210-fr)/40));
+      if(p.round){g.beginPath();g.arc(0,0,p.s/2,0,7);g.fill();}else g.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);
+      g.restore();
+    }
+    
+    
+    
+    
+    if(fr<210)requestAnimationFrame(loop);else cv.remove();
+  })();
+}
+function syncWin(){
+  const b=$('winBox');
+  if(!(P&&P.solved)){b.hidden=true;return;}
+  const k=P.ids.length,perfect=P.moves===k;
+  $('winTitle').textContent=perfect?`Perfect! Solved in ${k} moves.`:`Level complete in ${P.moves} moves!`;
+  if(perfect&&!P.celebrated){P.celebrated=true;celebrate();}
+  if(b.hidden){
+    const sel=$('nextSize'),cur=`${P.R}x${P.C}`,opts=['5x5','6x6','7x7','8x8','10x10','12x12','15x15'];
+    if(!opts.includes(cur))opts.unshift(cur);
+    sel.innerHTML=opts.map(o=>`<option value='${o}'>${o.replace('x','×')}</option>`).join('');sel.value=cur;
+  }
+  b.hidden=false;
+}
+const fillNote=L=>setTimeout(()=>{if(L.verified===false){const m='Could not guarantee a fill-only solution at this size, so this level may have gaps.';if($('tabPlay').hidden)status(m,'bad');else pstat(m,'bad');}},0);
+function genOpts(){
+  const cl=(id,d)=>Math.min(20,Math.max(2,Math.round(+$(id).value)||d));
+  return {nr:cl('gRows',5),nc:cl('gCols',5),letters:Math.min(26,Math.max(0,Math.round(+$('gLetters').value)||0)),walls:+$('gWalls').value,blocks:+$('gBlocks').value,fillOnly:$('gFill').checked};
+}
+function generateNow(){
+  const o=genOpts();$('gRows').value=o.nr;$('gCols').value=o.nc;
+  const L=generateLevel(o.nr,o.nc,o);
+  init(o.nr,o.nc);grid=L.g;blk=L.b;hw=L.h;vw=L.v;
+  $('rows').value=o.nr;$('cols').value=o.nc;$('fill').checked=true;fillNote(L);
+  $('cur').value=nextNum();draw();status('');
+  startPlay(true);
+}
+const gmodal=$('gmodal');
+$('genBtn').onclick=()=>{const b=$('genBtn');b.textContent='Generating…';setTimeout(()=>{generateNow();b.textContent='Generate level';gmodal.classList.remove('open');},30);};
+$('genOpen').onclick=()=>{const b=$('genOpen');b.textContent='Generating…';setTimeout(()=>{generateNow();b.textContent='Generate level';},30);};
+$('genCfg').onclick=()=>gmodal.classList.add('open');
+$('gClose').onclick=()=>gmodal.classList.remove('open');
+gmodal.addEventListener('click',e=>{if(e.target===gmodal)gmodal.classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')gmodal.classList.remove('open');});
+let newArm=false;
+$('pNew').onclick=()=>{
+  const b=$('pNew');
+  if(P&&!P.solved&&P.moves>0&&!newArm){
+    newArm=true;b.textContent='Tap again to confirm';
+    setTimeout(()=>{newArm=false;b.textContent='New level';},3000);return;
+  }
+  newArm=false;b.textContent='Generating…';setTimeout(()=>{generateNow();b.textContent='New level';},30);
+};
+$('nextBtn').onclick=()=>{
+  const [nr,nc]=$('nextSize').value.split('x').map(Number);
+  const o=genOpts();$('gRows').value=nr;$('gCols').value=nc;const L=generateLevel(nr,nc,o);
+  init(nr,nc);grid=L.g;blk=L.b;hw=L.h;vw=L.v;
+  $('rows').value=nr;$('cols').value=nc;$('fill').checked=true;fillNote(L);
+  $('cur').value=nextNum();draw();status('');
+  startPlay(true);
+};
+// ---------- Settings ----------
+const SETTINGS=[ // add more entries here: {key,title}
+  {key:'link',title:'Link lines'},
+  {key:'breakLines',title:'Allow line breaking'}
+];
+const settings={link:true,breakLines:false};
+try{Object.assign(settings,JSON.parse(localStorage.getItem('numberlink-settings')||'{}'));}catch(e){}
+SETTINGS.forEach(s=>{
+  const row=document.createElement('label');row.className='srow';
+  const t=document.createElement('span');t.textContent=s.title;
+  const cb=document.createElement('input');cb.type='checkbox';cb.className='sw';cb.checked=!!settings[s.key];
+  cb.onchange=()=>{settings[s.key]=cb.checked;try{localStorage.setItem('numberlink-settings',JSON.stringify(settings));}catch(e){}};
+  row.append(t,cb);$('settingsList').appendChild(row);
+});
+const smodal=$('smodal');
+$('pSettings').onclick=()=>smodal.classList.add('open');
+$('sClose').onclick=()=>smodal.classList.remove('open');
+smodal.addEventListener('click',e=>{if(e.target===smodal)smodal.classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')smodal.classList.remove('open');});
+// Home-screen icon for iOS (generated at runtime)
+try{
+  const cv=document.createElement('canvas');cv.width=cv.height=180;const g=cv.getContext('2d');
+  g.fillStyle='#1d1d1b';g.fillRect(0,0,180,180);
+  const path=(a,col)=>{g.strokeStyle=col;g.fillStyle=col;g.lineWidth=22;g.lineCap=g.lineJoin='round';g.beginPath();a.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.stroke();[a[0],a[a.length-1]].forEach(p=>{g.beginPath();g.arc(p[0],p[1],20,0,7);g.fill();});};
+  path([[45,45],[135,45]],'#e53935');path([[45,90],[90,90],[90,135],[135,135]],'#19d3da');path([[45,135],[45,100]],'#f5d90a');path([[135,90],[135,100]],'#2e9e44');
+  const l=document.createElement('link');l.rel='apple-touch-icon';l.href=cv.toDataURL('image/png');document.head.appendChild(l);
+}catch(e){}
+loadExample();
+showTab('play');
+{const m=(location.hash+location.search).match(/level=([^&]+)/);if(m&&decode(m[1])){status('Level loaded from link.','ok');showTab('play');}}
 })();
 </script>
 </body>
