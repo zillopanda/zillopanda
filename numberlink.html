@@ -25,6 +25,8 @@ button.p{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:60
 button:hover{filter:brightness(.96)}
 #board{width:100%;max-width:560px;display:block;margin:0 auto;touch-action:manipulation;user-select:none}
 #status{min-height:22px;margin-top:10px;font-weight:500;text-align:center}
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:16px;z-index:10}
+#modal.open{display:flex}
 .ok{color:#1f9d55}.bad{color:#d64545}
 .hint{color:var(--mut);font-size:13px;margin-top:8px;text-align:center}
 </style>
@@ -57,7 +59,17 @@ button:hover{filter:brightness(.96)}
   
   <button id="clear">Clear all</button>
   <button id="example">Load example</button>
+  <button id="share">Share / load level</button>
 </div>
+<div id="modal"><div class="card" role="dialog" aria-modal="true" style="width:100%;max-width:520px;margin:0">
+  <div class="row" style="justify-content:space-between;margin-bottom:10px"><strong>Share or load a level</strong><button id="closeBtn" aria-label="Close">✕</button></div>
+  <div class="row">
+    <input id="shareLink" type="text" placeholder="Paste a level link here and press Load" style="flex:1;min-width:200px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--cell);color:var(--ink);font:inherit">
+    <button id="copyBtn">Copy</button>
+    <button id="loadBtn">Load</button>
+  </div>
+  <div class="hint" id="shareMsg" style="text-align:left">Copy this link to share your level, or paste someone else's link and press Load.</div>
+</div></div>
 </main>
 
 <script>
@@ -229,7 +241,52 @@ function solve(fillAll){
   return{timeout,ms,nodes};
 }
 
+const bits=a=>a.flat().map(v=>v?1:0).join('');
+function encode(){
+  const raw=[R+'x'+C,grid.flat().join('.'),bits(blk),bits(hw),bits(vw),$('fill').checked?1:0].join('~');
+  return btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function decode(code){
+  try{
+    code=code.trim();const mm=code.match(/level=([^&#\s]+)/);if(mm)code=mm[1];
+    code=code.replace(/-/g,'+').replace(/_/g,'/');while(code.length%4)code+='=';
+    const [dim,g,b,h,v,f]=atob(code).split('~');
+    const [nr,nc]=dim.split('x').map(Number),N=nr*nc;
+    if(!(nr>=2&&nr<=20&&nc>=2&&nc<=20))return false;
+    const gs=g.split('.').map(Number);
+    if(gs.length!==N||gs.some(x=>!Number.isInteger(x)||x<0||x>9999)||[b,h,v].some(s=>!s||s.length!==N))return false;
+    init(nr,nc);
+    for(let p=0;p<N;p++){const r=Math.floor(p/nc),c=p%nc;
+      grid[r][c]=gs[p];blk[r][c]=b[p]==='1';hw[r][c]=h[p]==='1'&&r<nr-1;vw[r][c]=v[p]==='1'&&c<nc-1;
+      if(blk[r][c])grid[r][c]=0;}
+    $('rows').value=nr;$('cols').value=nc;$('fill').checked=f!=='0';
+    $('cur').value=nextNum();draw();return true;
+  }catch(e){return false;}
+}
+const modal=$('modal');
+function openModal(){modal.classList.add('open');const el=$('shareLink');el.focus();el.select();}
+function closeModal(){modal.classList.remove('open');}
+$('closeBtn').onclick=closeModal;
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+function shareMsg(t){$('shareMsg').textContent=t;}
+function copy(t){
+  const ok=()=>shareMsg('Link copied to clipboard.');
+  const fb=()=>{const el=$('shareLink');el.focus();el.select();let d=false;try{d=document.execCommand('copy');}catch(e){}d?ok():shareMsg('Press Ctrl/Cmd+C to copy the link.');};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,fb);else fb();
+}
+$('share').onclick=()=>{
+  const link=location.href.split('#')[0]+'#level='+encode();
+  $('shareLink').value=link;shareMsg('Press Copy to copy this link, or paste someone else\'s link and press Load.');openModal();
+};
+$('copyBtn').onclick=()=>{if($('shareLink').value)copy($('shareLink').value);};
+$('loadBtn').onclick=()=>{
+  if(decode($('shareLink').value)){status('Level loaded.','ok');closeModal();}
+  else shareMsg('Could not read that level link or code.');
+};
+window.addEventListener('hashchange',()=>{const m=location.hash.match(/level=([^&]+)/);if(m&&decode(m[1]))status('Level loaded from link.','ok');});
 $('example').click();
+{const m=(location.hash+location.search).match(/level=([^&]+)/);if(m&&decode(m[1]))status('Level loaded from link.','ok');}
 })();
 </script>
 </body>
